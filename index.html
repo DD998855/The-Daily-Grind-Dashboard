@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily Grind - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="./design.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-brand">
+                <img src="img/1.jpg" alt="The Daily Grind Logo" class="header-logo">
+                <h1>The Daily Grind — Dashboard</h1>
+            </div>
+            <div class="theme-selector">
+                <label for="themeSelector">Theme:</label>
+                <select id="themeSelector">
+                    <option value="pink">Pink</option>
+                    <option value="blue">Blue</option>
+                </select>
+            </div>
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search products, inventory, or payments…">
+                <button class="search-clear" id="searchClearBtn" title="Clear search">×</button>
+                <div class="search-message" id="searchMessage">No matches found.</div>
+            </div>
+            <div class="date-selector">
+                <select id="dateSelector">
+                    <option value="Today">Today</option>
+                    <option value="Yesterday">Yesterday</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Showing Label -->
+        <div class="showing-label">
+            Showing: <span id="showingText">Today</span>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <!-- Revenue - will be populated by JavaScript -->
+            </div>
+
+            <div class="kpi-card">
+                <!-- Expenses - will be populated by JavaScript -->
+            </div>
+
+            <div class="kpi-card">
+                <!-- Net Profit - will be populated by JavaScript -->
+            </div>
+
+            <div class="kpi-card">
+                <!-- Orders - will be populated by JavaScript -->
+            </div>
+
+            <div class="kpi-card">
+                <!-- Avg Order - will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Weekly Revenue Chart -->
+        <div class="chart-section">
+            <h2>Weekly Revenue Trend (Mon–Sun)</h2>
+            <div class="chart-container">
+                <canvas id="weeklyRevenueChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Products & Inventory Alerts -->
+        <div class="two-column-grid">
+            <!-- Top Products -->
+            <div class="section-card">
+                <h2>Top Products</h2>
+                <table id="topProductsTable">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Units Sold</th>
+                            <th>Revenue</th>
+                            <th>Profit Margin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topProductsBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Inventory Alerts -->
+            <div class="section-card">
+                <h2>Inventory Alerts</h2>
+                <table id="inventoryTable">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Current</th>
+                            <th>Reorder</th>
+                            <th>Days Left</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="section-card">
+            <h2>Payment Methods</h2>
+            <div class="payment-grid">
+                <div class="payment-chart">
+                    <canvas id="paymentMethodsChart"></canvas>
+                </div>
+                <div>
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Amount</th>
+                                <th>%</th>
+                                <th>Transactions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Credit Card</td>
+                                <td>$757.60</td>
+                                <td>42.3%</td>
+                                <td>48</td>
+                            </tr>
+                            <tr>
+                                <td>Cash</td>
+                                <td>$438.55</td>
+                                <td>24.5%</td>
+                                <td>28</td>
+                            </tr>
+                            <tr>
+                                <td>Debit Card</td>
+                                <td>$334.76</td>
+                                <td>18.7%</td>
+                                <td>21</td>
+                            </tr>
+                            <tr>
+                                <td>Mobile Pay</td>
+                                <td>$216.59</td>
+                                <td>12.1%</td>
+                                <td>14</td>
+                            </tr>
+                            <tr>
+                                <td>Gift Card</td>
+                                <td>$42.00</td>
+                                <td>2.4%</td>
+                                <td>3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js" defer></script>
+</body>
+</html>
