@@ -79,38 +79,42 @@
             <!-- Top Products -->
             <div class="section-card">
                 <h2>Top Products</h2>
-                <table id="topProductsTable">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Units Sold</th>
-                            <th>Revenue</th>
-                            <th>Profit Margin</th>
-                        </tr>
-                    </thead>
-                    <tbody id="topProductsBody">
-                        <!-- Populated by JavaScript -->
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table id="topProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Units Sold</th>
+                                <th>Revenue</th>
+                                <th>Profit Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topProductsBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Inventory Alerts -->
             <div class="section-card">
                 <h2>Inventory Alerts</h2>
-                <table id="inventoryTable">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Current</th>
-                            <th>Reorder</th>
-                            <th>Days Left</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inventoryBody">
-                        <!-- Populated by JavaScript -->
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table id="inventoryTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Current</th>
+                                <th>Reorder</th>
+                                <th>Days Left</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryBody">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -121,7 +125,7 @@
                 <div class="payment-chart">
                     <canvas id="paymentMethodsChart"></canvas>
                 </div>
-                <div>
+                <div class="table-wrapper">
                     <table class="payment-table">
                         <thead>
                             <tr>

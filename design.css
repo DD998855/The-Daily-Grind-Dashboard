@@ -492,38 +492,155 @@ tbody tr:last-child td {
     }
 }
 
-@media (max-width: 600px) {
-    .kpi-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+    /* Body spacing */
+    body {
+        padding: 12px;
     }
 
+    /* Header mobile layout */
     .header {
-        padding: 16px;
-        gap: 12px;
+        padding: 14px 16px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    /* Logo + Title row */
+    .header-brand {
+        width: 100%;
+        margin-bottom: 4px;
     }
 
     .header h1 {
-        font-size: 18px;
-        width: 100%;
+        font-size: 17px;
+        line-height: 1.3;
+        white-space: normal;
     }
 
     .header-brand .header-logo {
-        width: 34px;
-        height: 34px;
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Controls: 2 rows */
+    .theme-selector,
+    .theme-switcher {
+        flex: 0 0 auto;
+        min-width: 120px;
     }
 
     .search-box {
+        flex: 1 1 auto;
         max-width: 100%;
+        min-width: 180px;
     }
 
-    .theme-selector,
-    .theme-switcher,
+    .search-box input {
+        height: 44px;
+        font-size: 13px;
+        padding: 8px 14px 8px 40px;
+    }
+
+    .search-icon {
+        left: 12px;
+        font-size: 15px;
+    }
+
+    /* Hide browser search clear buttons */
+    .search-box input::-webkit-search-cancel-button,
+    .search-box input::-webkit-search-decoration {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+
+    .search-box input::-ms-clear,
+    .search-box input::-ms-reveal {
+        display: none;
+        width: 0;
+        height: 0;
+    }
+
+    .theme-selector select,
+    .theme-switcher select,
+    .date-selector select {
+        height: 44px;
+        padding: 8px 14px;
+        font-size: 13px;
+    }
+
     .date-selector {
-        flex: 1;
+        flex: 1 1 100%;
+        width: 100%;
     }
 
+    .date-selector select {
+        width: 100%;
+    }
+
+    /* Compact spacing */
+    .showing-label {
+        padding: 10px 16px;
+        margin-bottom: 16px;
+        font-size: 13px;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
+    .kpi-card {
+        padding: 16px;
+    }
+
+    .chart-section,
+    .section-card {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+
+    .chart-section h2,
+    .section-card h2 {
+        font-size: 16px;
+        margin-bottom: 14px;
+    }
+
+    /* Table scrolling */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -8px;
+        padding: 0 8px;
+    }
+
+    table {
+        min-width: 520px;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 10px 8px;
+        white-space: nowrap;
+    }
+
+    th {
+        font-size: 11px;
+    }
+
+    .payment-table {
+        min-width: 400px;
+        font-size: 13px;
+    }
+
+    .payment-table th,
+    .payment-table td {
+        padding: 8px 6px;
+    }
+
+    /* Charts */
     .chart-container {
-        height: 240px;
+        height: 260px;
     }
 
     .payment-chart {
@@ -532,36 +649,58 @@ tbody tr:last-child td {
     }
 
     .payment-grid {
-        gap: 16px;
+        gap: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    /* Even more compact on very small screens */
+    body {
+        padding: 10px;
+    }
+
+    .header {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .header h1 {
+        font-size: 16px;
+    }
+
+    .header-brand .header-logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .search-box input,
+    .theme-selector select,
+    .theme-switcher select,
+    .date-selector select {
+        height: 42px;
+    }
+
+    .chart-container {
+        height: 240px;
+    }
+
+    .payment-chart {
+        height: 240px;
     }
 
     table {
         font-size: 12px;
-        table-layout: auto;
     }
 
     th, td {
-        padding: 6px 4px;
-        word-break: break-word;
-    }
-
-    th {
-        font-size: 11px;
-    }
-
-    .table-wrapper {
-        overflow-x: auto;
-        margin: 0 -4px;
-    }
-
-    .section-card {
-        padding: 16px;
+        padding: 8px 6px;
     }
 
     .payment-table {
         font-size: 12px;
     }
 
+    .payment-table th,
     .payment-table td {
         padding: 6px 4px;
     }
