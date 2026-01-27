@@ -498,6 +498,12 @@ tbody tr:last-child td {
         padding: 12px;
     }
 
+    /* Prevent page overflow */
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     /* Header mobile layout */
     .header {
         padding: 14px 16px;
@@ -598,6 +604,10 @@ tbody tr:last-child td {
     .section-card {
         padding: 16px;
         margin-bottom: 16px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
     .chart-section h2,
@@ -606,17 +616,26 @@ tbody tr:last-child td {
         margin-bottom: 14px;
     }
 
-    /* Table scrolling */
+    /* Two column grid becomes single column */
+    .two-column-grid {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Table scrolling - key fix for Top Products & Inventory Alerts */
     .table-wrapper {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        margin: 0 -8px;
-        padding: 0 8px;
+        margin: 0 -16px;
+        padding: 0 16px;
+        width: calc(100% + 32px);
+        max-width: calc(100% + 32px);
     }
 
     table {
-        min-width: 520px;
+        min-width: 560px;
         font-size: 13px;
+        width: auto;
     }
 
     th, td {
@@ -629,7 +648,7 @@ tbody tr:last-child td {
     }
 
     .payment-table {
-        min-width: 400px;
+        min-width: 420px;
         font-size: 13px;
     }
 
