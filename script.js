@@ -113,11 +113,19 @@ function renderKPIs(day) {
         
         if (day === 'today') {
             changePercent = DATA.changes[metric.key];
-            changeClass = 'positive';
         } else {
             // Yesterday vs Today (will be negative)
             changePercent = ((mainValue - otherValue) / otherValue * 100).toFixed(1);
-            changeClass = parseFloat(changePercent) >= 0 ? 'positive' : '';
+        }
+        
+        // Assign class based on numeric value
+        const numericChange = parseFloat(changePercent);
+        if (numericChange > 0) {
+            changeClass = 'is-positive';
+        } else if (numericChange < 0) {
+            changeClass = 'is-negative';
+        } else {
+            changeClass = 'is-neutral';
         }
 
         const mainValueFormatted = metric.isCurrency ? formatCurrency(mainValue) : formatNumber(mainValue);
