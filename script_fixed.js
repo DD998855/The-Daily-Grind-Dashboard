@@ -344,12 +344,200 @@ dateSelector.addEventListener('change', (e) => {
     renderPerformanceSummary();
 });
 
-// Search Box (basic functionality)
+// ========== SEARCH FUNCTIONALITY ==========
+
+/**
+ * SEARCH IMPLEMENTATION - ZERO LAYOUT SHIFT HIGHLIGHT
+ * Highlights matching rows and text WITHOUT any layout changes.
+ * Features:
+ * - Live search with debouncing (150ms)
+ * - Case-insensitive partial matching
+ * - Highlight matching rows (background + inset shadow)
+ * - Highlight matching text with <span> (no padding, no font change)
+ * - Safe HTML escaping to prevent XSS
+ * - NO layout shift: no row insertion, no style changes, no metrics modification
+ * - NO "no results" messages anywhere
+ * - ESC to clear search
+ * - Ctrl/Cmd+K to focus search box
+ */
+
+// Helper: Escape HTML to prevent XSS
+function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// Helper: Normalize text for comparison
+function normalizeText(str) {
+    return String(str).toLowerCase().trim();
+}
+
+// Helper: Check if text matches query
+function matchesQuery(text, query) {
+    if (!query) return false;
+    return normalizeText(text).includes(normalizeText(query));
+}
+
+// Helper: Highlight matching substring in text WITHOUT changing layout
+function highlightText(text, query) {
+    if (!query || !text) return escapeHTML(text);
+    
+    const normalizedText = normalizeText(text);
+    const normalizedQuery = normalizeText(query);
+    const index = normalizedText.indexOf(normalizedQuery);
+    
+    if (index === -1) return escapeHTML(text);
+    
+    // Split text into parts: before, match, after
+    const before = text.substring(0, index);
+    const match = text.substring(index, index + query.length);
+    const after = text.substring(index + query.length);
+    
+    return `${escapeHTML(before)}<span class="search-hit">${escapeHTML(match)}</span>${escapeHTML(after)}`;
+}
+
+// Main highlight function
+function highlightDashboard(query) {
+    const normalizedQuery = normalizeText(query);
+    
+    // Highlight Inventory Alerts
+    highlightInventoryAlerts(normalizedQuery);
+    
+    // Highlight Top Products
+    highlightTopProducts(normalizedQuery);
+}
+
+// Highlight Inventory Alerts table
+function highlightInventoryAlerts(query) {
+    const tableBody = document.getElementById('inventoryTableBody');
+    if (!tableBody) return;
+    
+    const rows = tableBody.querySelectorAll('tr');
+    
+    rows.forEach(row => {
+        // Get item name cell (2nd column)
+        const itemCell = row.querySelector('td:nth-child(2)');
+        if (!itemCell) return;
+        
+        // Store original text if not already stored
+        if (!itemCell.dataset.originalText) {
+            itemCell.dataset.originalText = itemCell.textContent.trim();
+        }
+        
+        const originalText = itemCell.dataset.originalText;
+        
+        // Check for match in any searchable field
+        const daysCell = row.querySelector('td:nth-child(4)');
+        const actionCell = row.querySelector('td:nth-child(5)');
+        const searchableText = [
+            originalText,
+            daysCell ? daysCell.textContent : '',
+            actionCell ? actionCell.textContent : ''
+        ].join(' ');
+        
+        const isMatch = query ? matchesQuery(searchableText, query) : false;
+        
+        // Toggle row highlight (only class, no style changes)
+        if (isMatch) {
+            row.classList.add('row-match');
+            // Highlight text in item name (preserve <strong> tag)
+            itemCell.innerHTML = `<strong>${highlightText(originalText, query)}</strong>`;
+        } else {
+            row.classList.remove('row-match');
+            // Restore original text (preserve <strong> tag)
+            itemCell.innerHTML = `<strong>${escapeHTML(originalText)}</strong>`;
+        }
+    });
+    
+    // NO "no results" message - intentionally removed
+}
+
+// Highlight Top Products table
+function highlightTopProducts(query) {
+    const tableBody = document.getElementById('productsTableBody');
+    if (!tableBody) return;
+    
+    const rows = tableBody.querySelectorAll('tr');
+    
+    rows.forEach(row => {
+        // Get product name cell (2nd column, after rank)
+        const productCell = row.querySelector('td:nth-child(2)');
+        if (!productCell) return;
+        
+        // Store original text if not already stored
+        if (!productCell.dataset.originalText) {
+            productCell.dataset.originalText = productCell.textContent.trim();
+        }
+        
+        const originalText = productCell.dataset.originalText;
+        
+        // Check for match in any searchable field
+        const unitsCell = row.querySelector('td:nth-child(3)');
+        const revenueCell = row.querySelector('td:nth-child(4)');
+        const marginCell = row.querySelector('td:nth-child(5)');
+        const searchableText = [
+            originalText,
+            unitsCell ? unitsCell.textContent : '',
+            revenueCell ? revenueCell.textContent : '',
+            marginCell ? marginCell.textContent : ''
+        ].join(' ');
+        
+        const isMatch = query ? matchesQuery(searchableText, query) : false;
+        
+        // Toggle row highlight (only class, no style changes)
+        if (isMatch) {
+            row.classList.add('row-match');
+            // Highlight text in product name
+            productCell.innerHTML = highlightText(originalText, query);
+        } else {
+            row.classList.remove('row-match');
+            // Restore original text
+            productCell.innerHTML = escapeHTML(originalText);
+        }
+    });
+    
+    // NO "no results" message - intentionally removed
+}
+
+// Debounce helper
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Search input handler with debouncing
 const searchInput = document.getElementById('searchInput');
+const debouncedHighlight = debounce(highlightDashboard, 150);
+
 searchInput.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    // Simple search highlighting could be added here
-    console.log('Search query:', query);
+    const query = e.target.value;
+    debouncedHighlight(query);
+});
+
+// Clear search with ESC key
+searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        searchInput.value = '';
+        highlightDashboard('');
+        searchInput.blur();
+    }
+});
+
+// Focus search with Ctrl/Cmd + K
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+    }
 });
 
 // Window resize handler for chart

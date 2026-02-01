@@ -17,6 +17,33 @@
     --alert-orange-softer: rgba(255, 220, 180, 0.5);
     --alert-yellow-soft: rgba(255, 241, 153, 0.7);
     --alert-yellow-softer: rgba(255, 249, 196, 0.5);
+    
+    /* Shadow System - 统一阴影系统 */
+    --shadow-card: 0 6px 14px rgba(0, 0, 0, 0.06);
+    --shadow-card-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-header: 0 4px 12px rgba(0, 0, 0, 0.06);
+    --shadow-status-ring: 0 0 0 4px;
+    
+    /* Typography System - 统一字体系统 */
+    --fs-page-title: 20px;
+    --fs-section-title: 14px;
+    --fs-kpi-label: 16px;
+    --fs-kpi-value: 44px;
+    --fs-kpi-small-value: 20px;
+    --fs-body: 12px;
+    --fs-small: 10px;
+    --fs-tiny: 9px;
+    --fs-badge: 10px;
+    --fs-icon-large: 32px;
+    --fs-icon-medium: 20px;
+    --fs-icon-badge: 15px;
+    
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+    --fw-extrabold: 800;
+    --fw-black: 900;
 }
 
 :root[data-theme="blue"] {
@@ -62,7 +89,7 @@ body {
     background: white;
     border-radius: 16px;
     padding: 14px 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--shadow-header);
     display: flex;
     align-items: center;
     gap: 16px;
@@ -87,7 +114,7 @@ body {
 
 .header h1 {
     font-family: 'Krona One', sans-serif;
-    font-size: 20px;
+    font-size: var(--fs-page-title);
     color: #2d2d2d;
 }
 
@@ -99,8 +126,8 @@ body {
 }
 
 .theme-selector label {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
     color: #666;
 }
 
@@ -108,8 +135,8 @@ body {
     padding: 8px 12px;
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
     cursor: pointer;
     background: white;
 }
@@ -127,7 +154,7 @@ body {
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 16px;
+    font-size: var(--fs-kpi-label);
 }
 
 .search-box input {
@@ -135,7 +162,7 @@ body {
     padding: 10px 16px 10px 40px;
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
-    font-size: 14px;
+    font-size: var(--fs-section-title);
 }
 
 .date-selector {
@@ -146,8 +173,8 @@ body {
     padding: 9px 14px;
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
     cursor: pointer;
     background: white;
 }
@@ -157,9 +184,9 @@ body {
     background: white;
     padding: 8px 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-card-soft);
     margin-bottom: 8px;
-    font-size: 13px;
+    font-size: var(--fs-body);
     color: #666;
     flex-shrink: 0;
 }
@@ -219,7 +246,7 @@ body {
     background: #ffffff;
     border-radius: 18px;
     padding: 18px 20px 20px 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
     border: 1px solid rgba(0, 0, 0, 0.06);
     flex-shrink: 0;
     height: 100%;
@@ -227,7 +254,7 @@ body {
 
 .performance-summary h2 {
     font-family: 'Krona One', sans-serif;
-    font-size: 16px;
+    font-size: var(--fs-kpi-label);
     color: #2d2d2d;
     margin-top: 0;
     margin-bottom: 16px;
@@ -262,21 +289,21 @@ body {
 }
 
 .big-kpi-icon {
-    font-size: 32px;
+    font-size: var(--fs-icon-large);
     line-height: 1;
 }
 
 .big-kpi-label {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: var(--fs-kpi-label);
+    font-weight: var(--fw-semibold);
     color: #333;
     text-transform: none;
     letter-spacing: 0;
 }
 
 .big-kpi-value {
-    font-size: 44px;
-    font-weight: 900;
+    font-size: var(--fs-kpi-value);
+    font-weight: var(--fw-black);
     color: #1a1a1a;
     line-height: 1;
     margin-bottom: 10px;
@@ -284,7 +311,7 @@ body {
 }
 
 .big-kpi-target {
-    font-size: 12px;
+    font-size: var(--fs-body);
     color: #999;
     margin-bottom: 12px;
 }
@@ -307,8 +334,8 @@ body {
 }
 
 .big-kpi-change {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: var(--fs-section-title);
+    font-weight: var(--fw-bold);
     padding: 8px 16px;
     border-radius: 12px;
 }
@@ -348,21 +375,21 @@ body {
 }
 
 .small-kpi-icon {
-    font-size: 20px;
+    font-size: var(--fs-icon-medium);
     line-height: 1;
 }
 
 .small-kpi-label {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-semibold);
     color: #333;
     text-transform: none;
     letter-spacing: 0;
 }
 
 .small-kpi-value {
-    font-size: 20px;
-    font-weight: 900;
+    font-size: var(--fs-kpi-small-value);
+    font-weight: var(--fw-black);
     color: #2d2d2d;
     line-height: 1.1;
     margin-bottom: 8px;
@@ -388,8 +415,8 @@ body {
 }
 
 .small-kpi-change {
-    font-size: 11px;
-    font-weight: 700;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
     padding: 3px 8px;
     border-radius: 8px;
     display: inline-block;
@@ -400,13 +427,13 @@ body {
     background: linear-gradient(135deg, #ffffff 0%, #fffbfd 100%);
     border-radius: 16px;
     padding: 18px 20px 22px 20px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
     border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .section-card h2 {
     font-family: 'Krona One', sans-serif;
-    font-size: 14px;
+    font-size: var(--fs-section-title);
     color: #2d2d2d;
     margin-top: 0;
     margin-bottom: 10px;
@@ -438,8 +465,8 @@ body {
     gap: 4px;
     padding: 4px 10px;
     border-radius: 12px;
-    font-size: 11px;
-    font-weight: 700;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
     white-space: nowrap;
 }
 
@@ -447,15 +474,15 @@ body {
 .section-card.top-products-card .rank-badge {
     padding: 3px 9px;
     border-radius: 11px;
-    font-size: 10px;
+    font-size: var(--fs-badge);
 }
 
 .section-card.top-products-card .rank-number {
-    font-size: 10px;
+    font-size: var(--fs-badge);
 }
 
 .section-card.top-products-card .rank-medal {
-    font-size: 15px;
+    font-size: var(--fs-icon-badge);
     line-height: 1;
 }
 
@@ -477,12 +504,12 @@ body {
 }
 
 .section-card.top-products-card .rank-circle .rank-number {
-    font-size: 10px;
+    font-size: var(--fs-badge);
 }
 
 .rank-circle .rank-number {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: var(--fs-body);
+    font-weight: var(--fw-bold);
     color: #666;
 }
 
@@ -505,12 +532,12 @@ body {
 }
 
 .rank-number {
-    font-size: 10px;
-    font-weight: 800;
+    font-size: var(--fs-badge);
+    font-weight: var(--fw-extrabold);
 }
 
 .rank-medal {
-    font-size: 14px;
+    font-size: var(--fs-section-title);
     line-height: 1;
 }
 
@@ -532,8 +559,8 @@ body {
 .products-table th {
     text-align: left;
     padding: 10px 12px;
-    font-size: 10px;
-    font-weight: 700;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
     color: #666;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -552,13 +579,13 @@ body {
 /* Top Products: Compact header styling */
 .section-card.top-products-card .products-table th {
     padding: 6px 10px;
-    font-size: 9px;
+    font-size: var(--fs-tiny);
     line-height: 1.15;
 }
 
 .products-table td {
     padding: 12px 12px;
-    font-size: 12px;
+    font-size: var(--fs-body);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     line-height: 1.6;
     vertical-align: middle;
@@ -572,7 +599,7 @@ body {
 /* Top Products: Uniform cell styling with vertical centering */
 .section-card.top-products-card .products-table td {
     padding: 8px 10px;
-    font-size: 11px;
+    font-size: var(--fs-small);
     line-height: 1.3;
     vertical-align: middle;
 }
@@ -587,6 +614,25 @@ body {
 
 .products-table tr:hover {
     background: rgba(255, 155, 186, 0.05);
+}
+
+/* Search "No Results" styling - REMOVED (no longer used) */
+
+/* Search Highlight Styling - Zero Layout Impact */
+.row-match {
+    background: rgba(255, 215, 0, 0.12) !important;
+    box-shadow: inset 3px 0 0 rgba(255, 193, 7, 0.6);
+    /* No padding, no border, no margin - pure background + inset shadow */
+}
+
+.search-hit {
+    background: rgba(255, 200, 0, 0.45);
+    border-radius: 3px;
+    /* Critical: no padding, no font-weight change, inherit line-height */
+    padding: 0;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
 }
 
 /* ========== INVENTORY ALERTS ========== */
@@ -626,8 +672,8 @@ body {
 .inventory-table th {
     text-align: left;
     padding: 8px 10px;
-    font-size: 10px;
-    font-weight: 700;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
     color: #666;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -636,7 +682,7 @@ body {
 
 .inventory-table td {
     padding: 9px 10px;
-    font-size: 12px;
+    font-size: var(--fs-body);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
 
@@ -684,8 +730,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 11px;
-    font-weight: 700;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
     color: #333;
     white-space: nowrap;
     z-index: 1;
@@ -705,19 +751,19 @@ body {
 .status-ring.critical {
     border: 3px solid #ef5350;
     background: rgba(239, 83, 80, 0.1);
-    box-shadow: 0 0 0 4px rgba(239, 83, 80, 0.15);
+    box-shadow: var(--shadow-status-ring) rgba(239, 83, 80, 0.15);
 }
 
 .status-ring.low {
     border: 3px solid #ff9800;
     background: rgba(255, 152, 0, 0.1);
-    box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.15);
+    box-shadow: var(--shadow-status-ring) rgba(255, 152, 0, 0.15);
 }
 
 .status-ring.watch {
     border: 3px solid #ffc107;
     background: rgba(255, 193, 7, 0.1);
-    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.15);
+    box-shadow: var(--shadow-status-ring) rgba(255, 193, 7, 0.15);
 }
 
 .status-dot {
@@ -744,8 +790,8 @@ body {
     display: inline-block;
     padding: 6px 12px;
     border-radius: 12px;
-    font-size: 11px;
-    font-weight: 700;
+    font-size: var(--fs-small);
+    font-weight: var(--fw-bold);
     white-space: nowrap;
 }
 
@@ -847,7 +893,7 @@ body {
     }
 
     .header h1 {
-        font-size: 15px;
+        font-size: calc(var(--fs-page-title) * 0.75);
     }
     
     .header-logo {
@@ -858,7 +904,7 @@ body {
     .theme-selector label,
     .date-selector select,
     .theme-selector select {
-        font-size: 12px;
+        font-size: var(--fs-body);
     }
 
     .dashboard-grid {
@@ -881,24 +927,24 @@ body {
     
     .performance-summary h2,
     .section-card h2 {
-        font-size: 13px;
+        font-size: var(--fs-body);
         margin-bottom: 12px;
     }
 
     .big-kpi-value {
-        font-size: 36px;
+        font-size: calc(var(--fs-kpi-value) * 0.82);
     }
     
     .big-kpi-label {
-        font-size: 14px;
+        font-size: var(--fs-section-title);
     }
     
     .big-kpi-target {
-        font-size: 11px;
+        font-size: var(--fs-small);
     }
     
     .big-kpi-change {
-        font-size: 13px;
+        font-size: var(--fs-body);
         padding: 6px 12px;
     }
 
@@ -908,11 +954,11 @@ body {
     }
     
     .small-kpi-value {
-        font-size: 18px;
+        font-size: calc(var(--fs-kpi-small-value) * 0.9);
     }
     
     .small-kpi-label {
-        font-size: 12px;
+        font-size: var(--fs-body);
     }
 
     .products-table-wrapper {
@@ -927,18 +973,18 @@ body {
     .products-table th,
     .products-table td {
         padding: 8px 6px;
-        font-size: 11px;
+        font-size: var(--fs-small);
     }
     
     .rank-badge,
     .rank-badge-placeholder {
         width: 48px;
         padding: 2px 6px;
-        font-size: 9px;
+        font-size: var(--fs-tiny);
     }
     
     .rank-medal {
-        font-size: 12px;
+        font-size: var(--fs-body);
     }
     
     .inventory-card,
@@ -957,7 +1003,7 @@ body {
     
     .inventory-table th,
     .inventory-table td {
-        font-size: 11px;
+        font-size: var(--fs-small);
         padding: 8px;
     }
     
@@ -985,7 +1031,7 @@ body {
     }
     
     .header h1 {
-        font-size: 14px;
+        font-size: calc(var(--fs-page-title) * 0.7);
     }
 
     .search-box {
@@ -1012,27 +1058,27 @@ body {
     }
     
     .big-kpi-icon {
-        font-size: 28px;
+        font-size: calc(var(--fs-icon-large) * 0.88);
     }
 
     .big-kpi-value {
-        font-size: 32px;
+        font-size: calc(var(--fs-kpi-value) * 0.73);
     }
     
     .big-kpi-label {
-        font-size: 14px;
+        font-size: var(--fs-section-title);
     }
     
     .small-kpi-icon {
-        font-size: 18px;
+        font-size: calc(var(--fs-icon-medium) * 0.9);
     }
     
     .small-kpi-label {
-        font-size: 11px;
+        font-size: var(--fs-small);
     }
     
     .small-kpi-value {
-        font-size: 16px;
+        font-size: calc(var(--fs-kpi-small-value) * 0.8);
     }
     
     .podium-blocks {
@@ -1059,7 +1105,7 @@ body {
     }
     
     .stock-progress-label {
-        font-size: 10px;
+        font-size: var(--fs-badge);
     }
     
     .status-ring {
@@ -1068,7 +1114,7 @@ body {
     }
     
     .action-pill {
-        font-size: 10px;
+        font-size: var(--fs-badge);
         padding: 5px 10px;
     }
 }
