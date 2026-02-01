@@ -218,7 +218,7 @@ body {
 .performance-summary {
     background: #ffffff;
     border-radius: 18px;
-    padding: 20px;
+    padding: 18px 20px 20px 20px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.06);
     flex-shrink: 0;
@@ -229,6 +229,7 @@ body {
     font-family: 'Krona One', sans-serif;
     font-size: 16px;
     color: #2d2d2d;
+    margin-top: 0;
     margin-bottom: 16px;
 }
 
@@ -407,6 +408,7 @@ body {
     font-family: 'Krona One', sans-serif;
     font-size: 14px;
     color: #2d2d2d;
+    margin-top: 0;
     margin-bottom: 10px;
 }
 
@@ -416,7 +418,7 @@ body {
     flex-direction: column;
     min-height: 0;
     overflow: hidden;
-    padding: 14px 18px 16px 18px;
+    padding: 18px 18px 16px 18px;
 }
 
 .top-products-layout {
@@ -768,10 +770,11 @@ body {
     flex-direction: column;
     min-height: 0;
     overflow: hidden;
-    padding: 8px 20px 18px 20px;
+    padding: 18px 20px 18px 20px;
 }
 
 .revenue-card h2 {
+    margin-top: 0;
     margin-bottom: 4px;
 }
 
