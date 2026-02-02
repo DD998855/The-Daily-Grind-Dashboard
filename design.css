@@ -68,12 +68,24 @@
     box-sizing: border-box;
 }
 
+html {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
     height: 100vh;
     overflow: hidden;
     padding: 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img, svg, canvas {
+    max-width: 100%;
+    height: auto;
 }
 
 /* ========== CONTAINER ========== */
@@ -165,6 +177,7 @@ body {
     border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     font-size: var(--fs-section-title);
+    max-width: 100%;
 }
 
 .date-selector {
@@ -179,6 +192,7 @@ body {
     font-weight: var(--fw-semibold);
     cursor: pointer;
     background: white;
+    max-width: 100%;
 }
 
 /* ========== SHOWING LABEL ========== */
@@ -191,6 +205,8 @@ body {
     font-size: var(--fs-body);
     color: #666;
     flex-shrink: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
 }
 
 #showingText {
@@ -855,14 +871,53 @@ body {
     flex: 1;
     min-height: 0;
     position: relative;
+    overflow: hidden;
 }
 
 #revenueChart {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
 }
 
 /* ========== RESPONSIVE ========== */
+
+/* Tablet and below - Single column layout */
+@media (max-width: 1024px) {
+    .header {
+        flex-wrap: wrap;
+    }
+    
+    .search-box {
+        min-width: 150px;
+        max-width: 200px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+        row-gap: 20px;
+    }
+
+    .left-column {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .right-column {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .aligned-cards-row {
+        grid-column: 1;
+        grid-row: 3;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
+    }
+}
+
 @media (max-width: 1200px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -910,6 +965,7 @@ body {
     .container {
         height: auto;
         overflow: visible;
+        max-width: 100%;
     }
 
     .header {
@@ -925,6 +981,22 @@ body {
     .header-logo {
         width: 40px;
         height: 40px;
+    }
+    
+    .header-brand {
+        min-width: auto;
+        flex: 1 1 100%;
+    }
+    
+    .search-box {
+        min-width: 120px;
+        max-width: 100%;
+        flex: 1 1 auto;
+    }
+    
+    .date-selector,
+    .theme-selector {
+        flex: 0 1 auto;
     }
     
     .theme-selector label,
@@ -990,6 +1062,7 @@ body {
     .products-table-wrapper {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        max-width: 100%;
     }
     
     .products-table {
@@ -1016,11 +1089,14 @@ body {
     .inventory-card,
     .revenue-card {
         min-height: 300px;
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .table-wrapper {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        max-width: 100%;
     }
     
     .inventory-table {
@@ -1035,6 +1111,8 @@ body {
     
     .chart-container {
         min-height: 250px;
+        max-width: 100%;
+        overflow: hidden;
     }
 }
 
@@ -1054,6 +1132,7 @@ body {
         justify-content: center;
         text-align: center;
         gap: 10px;
+        flex: 1 1 100%;
     }
     
     .header h1 {
@@ -1062,15 +1141,33 @@ body {
 
     .search-box {
         max-width: 100%;
+        min-width: 100%;
         order: 5;
+        margin-left: 0;
+    }
+    
+    .search-box input {
+        width: 100%;
     }
     
     .date-selector {
         order: 3;
+        width: 100%;
+    }
+    
+    .date-selector select {
+        width: 100%;
     }
     
     .theme-selector {
         order: 4;
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .theme-selector select {
+        flex: 1;
+        max-width: 200px;
     }
     
     .dashboard-grid {
@@ -1081,6 +1178,8 @@ body {
     .performance-summary,
     .section-card {
         padding: 14px;
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .big-kpi-icon {
@@ -1120,10 +1219,12 @@ body {
     
     .products-table {
         min-width: 450px;
+        width: 100%;
     }
     
     .inventory-table {
         min-width: 550px;
+        width: 100%;
     }
     
     .stock-progress {
