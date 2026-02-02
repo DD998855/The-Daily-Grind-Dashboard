@@ -228,6 +228,7 @@ function renderWeeklyRevenue() {
     // Data
     const days = WEEKLY_DATA.map(d => d.day.substring(0, 3)); // Mon, Tue, etc.
     const revenues = WEEKLY_DATA.map(d => d.revenue);
+    const fullDays = WEEKLY_DATA.map(d => d.day); // Full day names for tooltip
     const maxRevenue = Math.max(...revenues);
     const minRevenue = Math.min(...revenues);
     const revenueRange = maxRevenue - minRevenue;
@@ -318,6 +319,82 @@ function renderWeeklyRevenue() {
         const y = padding.top + (chartHeight / 5) * i;
         ctx.fillText('$' + (value / 1000).toFixed(1) + 'k', padding.left - 10, y + 4);
     }
+    
+    // ========== TOOLTIP FUNCTIONALITY ==========
+    
+    // Create or get tooltip element
+    let tooltip = document.getElementById('chart-tooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'chart-tooltip';
+        tooltip.className = 'chart-tooltip';
+        canvas.parentElement.style.position = 'relative';
+        canvas.parentElement.appendChild(tooltip);
+    }
+    
+    // Find nearest data point to mouse position
+    function getNearestPoint(mouseX, mouseY) {
+        let minDist = Infinity;
+        let nearestIndex = -1;
+        
+        revenues.forEach((revenue, i) => {
+            const px = getX(i);
+            const py = getY(revenue);
+            const dist = Math.sqrt(Math.pow(mouseX - px, 2) + Math.pow(mouseY - py, 2));
+            
+            if (dist < minDist && dist < 40) { // 40px threshold
+                minDist = dist;
+                nearestIndex = i;
+            }
+        });
+        
+        return nearestIndex;
+    }
+    
+    // Mouse move handler
+    function handleMouseMove(e) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        const nearestIndex = getNearestPoint(mouseX, mouseY);
+        
+        if (nearestIndex >= 0) {
+            // Show tooltip with exact data
+            const dayName = fullDays[nearestIndex];
+            const revenueValue = revenues[nearestIndex];
+            
+            tooltip.innerHTML = `
+                <div class="chart-tooltip-day">${dayName}</div>
+                <div class="chart-tooltip-value">${formatCurrency(revenueValue)}</div>
+            `;
+            
+            // Position tooltip near the point
+            const pointX = getX(nearestIndex);
+            const pointY = getY(revenueValue);
+            
+            tooltip.style.left = pointX + 'px';
+            tooltip.style.top = (pointY - 50) + 'px';
+            tooltip.style.transform = 'translateX(-50%)';
+            
+            tooltip.classList.add('is-visible');
+        } else {
+            tooltip.classList.remove('is-visible');
+        }
+    }
+    
+    // Mouse leave handler
+    function handleMouseLeave() {
+        tooltip.classList.remove('is-visible');
+    }
+    
+    // Remove old listeners before adding new ones
+    canvas.removeEventListener('mousemove', handleMouseMove);
+    canvas.removeEventListener('mouseleave', handleMouseLeave);
+    
+    // Add event listeners
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
 }
 
 // ========== EVENT LISTENERS ==========
