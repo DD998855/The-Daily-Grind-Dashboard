@@ -1,119 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Daily Grind - Dashboard</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Krona+One&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./design.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Daily Grind — Dashboard</title>
+  <link rel="stylesheet" href="design.css">
 </head>
 <body>
-    <div class="container">
+  <div class="container">
         <!-- Header -->
         <div class="header">
-            <div class="header-brand">
-                <img src="img/1.jpg" alt="The Daily Grind Logo" class="header-logo">
-                <h1>The Daily Grind — Dashboard</h1>
-            </div>
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search products or inventory…">
-            </div>
-            <div class="date-selector">
-                <select id="dateSelector">
-                    <option value="today">Today</option>
-                    <option value="yesterday">Yesterday</option>
-                </select>
-            </div>
-            <div class="theme-selector">
-                <label for="themeSelector">Theme:</label>
-                <select id="themeSelector">
-                    <option value="pink">Pink</option>
-                    <option value="blue">Blue</option>
-                </select>
-            </div>
+          <div class="header-brand">
+            <img src="img/1.jpg" alt="The Daily Grind Logo" class="header-logo">
+            <h1>The Daily Grind — Dashboard</h1>
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search products or inventory…">
+          </div>
+          <div class="date-selector">
+            <select id="dateSelector">
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+            </select>
+          </div>
+          <div class="theme-selector">
+            <label for="themeSelector">Theme:</label>
+            <select id="themeSelector">
+              <option value="pink">Pink</option>
+              <option value="blue">Blue</option>
+            </select>
+          </div>
         </div>
 
         <!-- Showing Label -->
         <div class="showing-label">
-            Showing: <span id="showingText">Today</span>
+          Showing: <span id="showingText">Today</span>
         </div>
 
         <!-- Main Dashboard Grid -->
         <div class="dashboard-grid">
-            <!-- LEFT COLUMN -->
-            <div class="left-column">
-                <!-- Performance Summary -->
-                <div class="performance-summary">
-                    <h2>Performance Summary</h2>
-                    <div class="performance-layout">
-                        <!-- Big Net Profit Card -->
-                        <div class="big-kpi-card" id="netProfitCard"></div>
-                        <!-- 4 Small KPI Cards (2x2) -->
-                        <div class="small-kpi-grid" id="smallKpiGrid"></div>
-                    </div>
+          <!-- LEFT COLUMN -->
+          <div class="left-column">
+            <div class="performance-summary">
+              <h2>Performance Summary</h2>
+              <div class="performance-layout">
+                <div class="big-kpi-card" id="netProfitCard"></div>
+                <div class="small-kpi-grid" id="smallKpiGrid"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN -->
+          <div class="right-column">
+            <div class="section-card inventory-card">
+              <h2>⚠️ Inventory Alerts</h2>
+              <div class="table-wrapper">
+                <table class="inventory-table">
+                  <thead>
+                    <tr>
+                      <th class="status-col">Status</th>
+                      <th>Item</th>
+                      <th class="stock-col">Stock Level</th>
+                      <th>Days Left</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inventoryTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ALIGNED CARDS ROW -->
+          <div class="aligned-cards-row">
+            <div class="section-card top-products-card">
+              <h2>🎯 Top Products</h2>
+              <div class="top-products-layout">
+                <div class="products-table-wrapper">
+                  <table class="products-table">
+                    <thead>
+                      <tr>
+                        <th class="rank-col">Rank</th>
+                        <th>Product</th>
+                        <th>Units Sold</th>
+                        <th>Revenue</th>
+                        <th>Profit Margin</th>
+                      </tr>
+                    </thead>
+                    <tbody id="productsTableBody"></tbody>
+                  </table>
                 </div>
+              </div>
             </div>
 
-            <!-- RIGHT COLUMN -->
-            <div class="right-column">
-                <!-- Inventory Alerts -->
-                <div class="section-card inventory-card">
-                    <h2>⚠️ Inventory Alerts</h2>
-                    <div class="table-wrapper">
-                        <table class="inventory-table">
-                            <thead>
-                                <tr>
-                                    <th class="status-col">Status</th>
-                                    <th>Item</th>
-                                    <th class="stock-col">Stock Level</th>
-                                    <th>Days Left</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="inventoryTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="section-card revenue-card">
+              <h2>📊 Weekly Revenue Trend (Mon–Sun)</h2>
+              <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+              </div>
             </div>
-
-            <!-- ALIGNED CARDS ROW -->
-            <div class="aligned-cards-row">
-                <!-- Top Products -->
-                <div class="section-card top-products-card">
-                    <h2>🎯 Top Products</h2>
-                    <div class="top-products-layout">
-                        <!-- Products Table -->
-                        <div class="products-table-wrapper">
-                            <table class="products-table">
-                                <thead>
-                                    <tr>
-                                        <th class="rank-col">Rank</th>
-                                        <th>Product</th>
-                                        <th>Units Sold</th>
-                                        <th>Revenue</th>
-                                        <th>Profit Margin</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productsTableBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Weekly Revenue Trend -->
-                <div class="section-card revenue-card">
-                    <h2>📊 Weekly Revenue Trend (Mon–Sun)</h2>
-                    <div class="chart-container">
-                        <canvas id="revenueChart"></canvas>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <script src="./script_fixed.js"></script>
+  <script src="./script_fixed.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-/* ========== ROOT VARIABLES ========== */
+﻿/* ========== ROOT VARIABLES ========== */
 :root {
     /* Theme-specific colors (change with theme) */
     --accent-color: rgba(255, 100, 150, 1);
@@ -19,25 +19,25 @@
     --alert-yellow-soft: rgba(255, 241, 153, 0.7);
     --alert-yellow-softer: rgba(255, 249, 196, 0.5);
     
-    /* Shadow System - 统一阴影系统 */
+    /* Shadow System - 缁熶竴闃村奖绯荤粺 */
     --shadow-card: 0 6px 14px rgba(0, 0, 0, 0.06);
     --shadow-card-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
     --shadow-header: 0 4px 12px rgba(0, 0, 0, 0.06);
     --shadow-status-ring: 0 0 0 4px;
     
-    /* Typography System - 统一字体系统 */
-    --fs-page-title: 20px;
-    --fs-section-title: 14px;
-    --fs-kpi-label: 16px;
-    --fs-kpi-value: 44px;
-    --fs-kpi-small-value: 20px;
-    --fs-body: 12px;
-    --fs-small: 10px;
-    --fs-tiny: 9px;
-    --fs-badge: 10px;
-    --fs-icon-large: 32px;
-    --fs-icon-medium: 20px;
-    --fs-icon-badge: 15px;
+    /* Typography System - 缁熶竴瀛椾綋绯荤粺 */
+    --fs-page-title: clamp(16px, 3vw, 20px);
+    --fs-section-title: clamp(12px, 2vw, 14px);
+    --fs-kpi-label: clamp(14px, 2.5vw, 16px);
+    --fs-kpi-value: clamp(32px, 6vw, 44px);
+    --fs-kpi-small-value: clamp(18px, 3vw, 20px);
+    --fs-body: clamp(11px, 1.8vw, 12px);
+    --fs-small: clamp(9px, 1.5vw, 10px);
+    --fs-tiny: clamp(8px, 1.3vw, 9px);
+    --fs-badge: clamp(9px, 1.5vw, 10px);
+    --fs-icon-large: clamp(26px, 5vw, 32px);
+    --fs-icon-medium: clamp(18px, 3vw, 20px);
+    --fs-icon-badge: clamp(13px, 2.5vw, 15px);
     
     --fw-regular: 400;
     --fw-medium: 500;
@@ -76,9 +76,8 @@ html {
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
-    height: 100vh;
-    overflow: hidden;
-    padding: 12px;
+    min-height: 100vh;
+    padding: clamp(8px, 1.5vw, 12px);
     max-width: 100%;
     overflow-x: hidden;
 }
@@ -90,25 +89,25 @@ img, svg, canvas {
 
 /* ========== CONTAINER ========== */
 .container {
+    width: 100%;
     max-width: 1600px;
     margin: 0 auto;
-    height: calc(100vh - 24px);
+    min-height: calc(100vh - 24px);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 /* ========== HEADER ========== */
 .header {
     background: white;
     border-radius: 16px;
-    padding: 14px 20px;
+    padding: clamp(10px, 2vw, 14px) clamp(14px, 3vw, 20px);
     box-shadow: var(--shadow-header);
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: clamp(10px, 2vw, 16px);
     margin-bottom: 10px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     flex-shrink: 0;
 }
 
@@ -116,7 +115,6 @@ img, svg, canvas {
     display: flex;
     align-items: center;
     gap: 12px;
-    min-width: 200px;
 }
 
 .header-logo {
@@ -157,7 +155,8 @@ img, svg, canvas {
 
 .search-box {
     position: relative;
-    min-width: 180px;
+    flex: 1;
+    min-width: 120px;
     max-width: 240px;
     order: 2;
     margin-left: auto;
@@ -178,6 +177,7 @@ img, svg, canvas {
     border-radius: 12px;
     font-size: var(--fs-section-title);
     max-width: 100%;
+    box-sizing: border-box;
 }
 
 .date-selector {
@@ -263,11 +263,13 @@ img, svg, canvas {
 .performance-summary {
     background: #ffffff;
     border-radius: 18px;
-    padding: 18px 20px 20px 20px;
+    padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px) clamp(16px, 3vw, 20px) clamp(16px, 3vw, 20px);
     box-shadow: var(--shadow-card);
     border: 1px solid rgba(0, 0, 0, 0.06);
     flex-shrink: 0;
     height: 100%;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .performance-summary h2 {
@@ -281,7 +283,14 @@ img, svg, canvas {
 .performance-layout {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
-    gap: 16px;
+    gap: clamp(12px, 2vw, 16px);
+}
+
+@media (max-width: 768px) {
+    .performance-layout {
+        grid-template-columns: 1fr;
+        gap: clamp(14px, 2.5vw, 20px);
+    }
 }
 
 /* Big Net Profit Card */
@@ -289,7 +298,7 @@ img, svg, canvas {
     background: linear-gradient(135deg, rgb(255, 255, 255), rgb(255, 255, 255));
     border: 2px solid var(--accent-pink-border);
     border-radius: 16px;
-    padding: 20px 18px;
+    padding: clamp(16px, 3vw, 20px) clamp(14px, 2.5vw, 18px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -367,14 +376,22 @@ img, svg, canvas {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 14px;
+    gap: clamp(10px, 2vw, 14px);
+}
+
+@media (max-width: 480px) {
+    .small-kpi-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: clamp(10px, 2vw, 12px);
+    }
 }
 
 .small-kpi-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
     border: 2px solid var(--accent-pink-border);
     border-radius: 14px;
-    padding: 14px 12px;
+    padding: clamp(12px, 2vw, 14px) clamp(10px, 1.8vw, 12px);
     position: relative;
     overflow: hidden;
 }
@@ -432,9 +449,11 @@ img, svg, canvas {
 .section-card {
     background: linear-gradient(135deg, #ffffff 0%, #fffbfd 100%);
     border-radius: 16px;
-    padding: 18px 20px 22px 20px;
+    padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px) clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
     box-shadow: var(--shadow-card);
     border: 1px solid rgba(0, 0, 0, 0.04);
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .section-card h2 {
@@ -564,7 +583,7 @@ img, svg, canvas {
 
 .products-table th {
     text-align: left;
-    padding: 10px 12px;
+    padding: clamp(6px, 1.5vw, 10px) clamp(8px, 1.8vw, 12px);
     font-size: var(--fs-small);
     font-weight: var(--fw-bold);
     color: #666;
@@ -590,7 +609,7 @@ img, svg, canvas {
 }
 
 .products-table td {
-    padding: 12px 12px;
+    padding: clamp(8px, 1.5vw, 12px) clamp(8px, 1.8vw, 12px);
     font-size: var(--fs-body);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     line-height: 1.6;
@@ -713,7 +732,7 @@ img, svg, canvas {
 
 .inventory-table th {
     text-align: left;
-    padding: 8px 10px;
+    padding: clamp(6px, 1.2vw, 8px) clamp(8px, 1.5vw, 10px);
     font-size: var(--fs-small);
     font-weight: var(--fw-bold);
     color: #666;
@@ -723,7 +742,7 @@ img, svg, canvas {
 }
 
 .inventory-table td {
-    padding: 9px 10px;
+    padding: clamp(7px, 1.3vw, 9px) clamp(8px, 1.5vw, 10px);
     font-size: var(--fs-body);
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
@@ -735,7 +754,6 @@ img, svg, canvas {
 
 .inventory-table .stock-col {
     width: 200px;
-    min-width: 200px;
 }
 
 /* Stock Progress Bar */
@@ -858,7 +876,7 @@ img, svg, canvas {
     flex-direction: column;
     min-height: 0;
     overflow: hidden;
-    padding: 18px 20px 18px 20px;
+    padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px) clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px);
 }
 
 .revenue-card h2 {
@@ -869,7 +887,8 @@ img, svg, canvas {
 .chart-container {
     width: 100%;
     flex: 1;
-    min-height: 0;
+    min-height: clamp(220px, 35vh, 320px);
+    max-height: clamp(280px, 45vh, 450px);
     position: relative;
     overflow: hidden;
 }
@@ -884,29 +903,44 @@ img, svg, canvas {
 
 /* Tablet and below - Single column layout */
 @media (max-width: 1024px) {
+    body {
+        overflow-y: auto;
+        height: auto;
+    }
+    
+    .container {
+        height: auto;
+        overflow: visible;
+    }
+    
     .header {
         flex-wrap: wrap;
+        gap: clamp(8px, 1.5vw, 12px);
     }
     
     .search-box {
         min-width: 150px;
         max-width: 200px;
+        flex: 1 1 auto;
     }
     
     .dashboard-grid {
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        row-gap: 20px;
+        row-gap: clamp(16px, 3vw, 20px);
+        overflow: visible;
     }
 
     .left-column {
         grid-column: 1;
         grid-row: 1;
+        overflow: visible;
     }
 
     .right-column {
         grid-column: 1;
         grid-row: 2;
+        overflow: visible;
     }
 
     .aligned-cards-row {
@@ -914,50 +948,13 @@ img, svg, canvas {
         grid-row: 3;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
-        gap: 20px;
+        gap: clamp(16px, 3vw, 20px);
     }
-}
-
-@media (max-width: 1200px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-        row-gap: 35px;
-        column-gap: 16px;
-    }
-
-    .left-column {
-        grid-column: 1;
-        grid-row: 1;
-    }
-
-    .right-column {
-        grid-column: 1;
-        grid-row: 2;
-    }
-
-    .aligned-cards-row {
-        grid-column: 1;
-        grid-row: 3;
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
-    }
-
-    .performance-layout {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    .small-kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
 }
 
 @media (max-width: 768px) {
     body {
-        padding: 8px;
+        padding: clamp(6px, 1.2vw, 8px);
         overflow-y: auto;
         height: auto;
     }
@@ -969,18 +966,18 @@ img, svg, canvas {
     }
 
     .header {
-        padding: 12px 16px;
-        gap: 12px;
+        padding: clamp(10px, 2vw, 12px) clamp(12px, 2.5vw, 16px);
+        gap: clamp(8px, 1.5vw, 12px);
         flex-wrap: wrap;
     }
 
     .header h1 {
-        font-size: calc(var(--fs-page-title) * 0.75);
+        font-size: clamp(14px, 2.5vw, 16px);
     }
     
     .header-logo {
-        width: 40px;
-        height: 40px;
+        width: clamp(36px, 7vw, 40px);
+        height: clamp(36px, 7vw, 40px);
     }
     
     .header-brand {
@@ -1025,38 +1022,7 @@ img, svg, canvas {
     
     .performance-summary h2,
     .section-card h2 {
-        font-size: var(--fs-body);
-        margin-bottom: 12px;
-    }
-
-    .big-kpi-value {
-        font-size: calc(var(--fs-kpi-value) * 0.82);
-    }
-    
-    .big-kpi-label {
-        font-size: var(--fs-section-title);
-    }
-    
-    .big-kpi-target {
-        font-size: var(--fs-small);
-    }
-    
-    .big-kpi-change {
-        font-size: var(--fs-body);
-        padding: 6px 12px;
-    }
-
-    .small-kpi-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    
-    .small-kpi-value {
-        font-size: calc(var(--fs-kpi-small-value) * 0.9);
-    }
-    
-    .small-kpi-label {
-        font-size: var(--fs-body);
+        margin-bottom: clamp(8px, 1.5vw, 12px);
     }
 
     .products-table-wrapper {
@@ -1118,25 +1084,25 @@ img, svg, canvas {
 
 @media (max-width: 480px) {
     body {
-        padding: 6px;
+        padding: clamp(4px, 1vw, 6px);
     }
 
     .header {
         flex-direction: column;
         align-items: stretch;
-        padding: 12px;
-        gap: 10px;
+        padding: clamp(10px, 2vw, 12px);
+        gap: clamp(8px, 1.5vw, 10px);
     }
 
     .header-brand {
         justify-content: center;
         text-align: center;
-        gap: 10px;
+        gap: clamp(8px, 1.5vw, 10px);
         flex: 1 1 100%;
     }
     
     .header h1 {
-        font-size: calc(var(--fs-page-title) * 0.7);
+        font-size: clamp(12px, 2.2vw, 14px);
     }
 
     .search-box {
@@ -1171,64 +1137,36 @@ img, svg, canvas {
     }
     
     .dashboard-grid {
-        row-gap: 16px;
-        column-gap: 12px;
+        row-gap: clamp(12px, 2vw, 16px);
+        column-gap: clamp(8px, 1.5vw, 12px);
     }
     
     .performance-summary,
     .section-card {
-        padding: 14px;
+        padding: clamp(10px, 1.8vw, 14px);
         max-width: 100%;
         overflow: hidden;
     }
     
-    .big-kpi-icon {
-        font-size: calc(var(--fs-icon-large) * 0.88);
-    }
-
-    .big-kpi-value {
-        font-size: calc(var(--fs-kpi-value) * 0.73);
-    }
-    
-    .big-kpi-label {
-        font-size: var(--fs-section-title);
-    }
-    
-    .small-kpi-icon {
-        font-size: calc(var(--fs-icon-medium) * 0.9);
-    }
-    
-    .small-kpi-label {
-        font-size: var(--fs-small);
-    }
-    
-    .small-kpi-value {
-        font-size: calc(var(--fs-kpi-small-value) * 0.8);
-    }
-    
-    .podium-blocks {
-        flex-direction: column;
-        gap: 10px;
-        padding: 12px;
-    }
-    
-    .podium-block {
-        min-width: auto;
-        width: 100%;
+    .inventory-card,
+    .revenue-card {
+        min-height: clamp(250px, 40vh, 300px);
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .products-table {
-        min-width: 450px;
+        min-width: 420px;
         width: 100%;
     }
     
     .inventory-table {
-        min-width: 550px;
+        min-width: 500px;
         width: 100%;
     }
     
     .stock-progress {
-        height: 24px;
+        height: clamp(20px, 4vw, 24px);
     }
     
     .stock-progress-label {
@@ -1236,13 +1174,328 @@ img, svg, canvas {
     }
     
     .status-ring {
-        width: 28px;
-        height: 28px;
+        width: clamp(26px, 5vw, 28px);
+        height: clamp(26px, 5vw, 28px);
     }
     
     .action-pill {
         font-size: var(--fs-badge);
-        padding: 5px 10px;
+        padding: clamp(4px, 1vw, 5px) clamp(8px, 1.5vw, 10px);
+
+/* =========================
+   TOOLTIP 修复：不再被裁切
+   ========================= */
+
+.section-card.revenue-card {
+  overflow: visible !important;
+}
+
+.revenue-card .chart-container {
+  overflow: visible !important;
+}
+
+.chart-tooltip {
+  z-index: 99999;
+}
+
+/* =========================
+   响应式适配 - 平板和小屏
+   ========================= */
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .left-column,
+    .right-column {
+        grid-column: 1;
+        width: 100%;
+    }
+
+    .aligned-cards-row {
+        grid-column: 1;
+        grid-template-columns: 1fr;
     }
 }
 
+/* =========================
+   移动端响应式适配
+   适配 375px - 768px 手机宽度
+   ========================= */
+
+@media (max-width: 768px) {
+    /* 全局防溢出 */
+    html {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
+        width: 100%;
+        max-width: 100%;
+        padding: clamp(6px, 2vw, 8px);
+        overflow-x: hidden;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+        overflow-x: hidden;
+    }
+
+    /* Header 移动端布局 */
+    .header {
+        padding: clamp(10px, 3vw, 12px);
+        gap: clamp(8px, 2vw, 10px);
+        flex-wrap: wrap;
+    }
+
+    .header-brand {
+        flex: 1 1 100%;
+        order: 1;
+        gap: 8px;
+    }
+
+    .header h1 {
+        font-size: clamp(13px, 3.5vw, 15px);
+    }
+
+    .header-logo {
+        width: clamp(32px, 8vw, 36px);
+        height: clamp(32px, 8vw, 36px);
+    }
+
+    .search-box {
+        flex: 1 1 100%;
+        order: 2;
+        margin-left: 0;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .search-box input {
+        font-size: clamp(12px, 3vw, 13px);
+        padding: 8px 12px 8px 36px;
+    }
+
+    .date-selector {
+        flex: 1 1 auto;
+        order: 3;
+    }
+
+    .date-selector select {
+        width: 100%;
+        font-size: clamp(11px, 2.8vw, 12px);
+        padding: 8px 12px;
+    }
+
+    .theme-selector {
+        flex: 1 1 auto;
+        order: 4;
+    }
+
+    .theme-selector label {
+        font-size: clamp(11px, 2.8vw, 12px);
+    }
+
+    .theme-selector select {
+        width: 100%;
+        font-size: clamp(11px, 2.8vw, 12px);
+        padding: 8px 12px;
+    }
+
+    /* Dashboard 网格改为单列 */
+    .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(10px, 2.5vw, 12px);
+        overflow: visible;
+    }
+
+    .left-column,
+    .right-column {
+        width: 100%;
+        overflow: visible;
+    }
+
+    .aligned-cards-row {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(10px, 2.5vw, 12px);
+    }
+
+    /* 所有卡片防溢出 */
+    .section-card {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        padding: clamp(12px, 3vw, 14px);
+    }
+
+    .section-card h2 {
+        font-size: clamp(13px, 3.2vw, 14px);
+    }
+
+    /* 性能卡片布局 */
+    .performance-summary {
+        padding: clamp(12px, 3vw, 14px);
+    }
+
+    .performance-layout {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(10px, 2.5vw, 12px);
+    }
+
+    .big-kpi-card {
+        width: 100%;
+        padding: clamp(14px, 3.5vw, 16px);
+    }
+
+    .small-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: clamp(8px, 2vw, 10px);
+    }
+
+    .small-kpi-card {
+        padding: clamp(10px, 2.5vw, 12px) clamp(8px, 2vw, 10px);
+    }
+
+    /* Revenue 图表容器 */
+    .revenue-card {
+        overflow-x: hidden;
+    }
+
+    .revenue-card .chart-container {
+        width: 100%;
+        height: clamp(200px, 50vw, 250px);
+        position: relative;
+    }
+
+    .revenue-card canvas {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100%;
+    }
+
+    /* 表格容器和表格真正流体布局 */
+    .table-wrapper {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Products Table - 流体布局 */
+    .products-table {
+        width: 100%;
+        min-width: 100%;
+        table-layout: auto;
+    }
+
+    .products-table th,
+    .products-table td {
+        padding: clamp(6px, 1.5vw, 8px) clamp(6px, 1.5vw, 8px);
+        font-size: clamp(10px, 2.5vw, 11px);
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .products-table th.rank-col {
+        width: clamp(40px, 10vw, 50px);
+    }
+
+    .section-card.top-products-card .products-table th,
+    .section-card.top-products-card .products-table td {
+        padding: clamp(5px, 1.2vw, 7px) clamp(5px, 1.2vw, 7px);
+        font-size: clamp(9px, 2.2vw, 10px);
+    }
+
+    /* Inventory Table - 流体布局 */
+    .inventory-table {
+        width: 100%;
+        min-width: 100%;
+        table-layout: auto;
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+        padding: clamp(6px, 1.5vw, 8px) clamp(6px, 1.5vw, 8px);
+        font-size: clamp(10px, 2.5vw, 11px);
+        word-break: break-word;
+        white-space: normal;
+    }
+
+    .inventory-table .status-col {
+        width: clamp(40px, 10vw, 50px);
+    }
+
+    .inventory-table .stock-col {
+        width: auto;
+        min-width: 0;
+    }
+
+    /* Stock Progress Bar 移动端适配 */
+    .stock-progress {
+        height: clamp(22px, 5.5vw, 26px);
+        min-width: 100px;
+    }
+
+    .stock-progress-label {
+        font-size: clamp(9px, 2.2vw, 10px);
+    }
+
+    /* Status Ring 缩小 */
+    .status-ring {
+        width: clamp(20px, 5vw, 24px);
+        height: clamp(20px, 5vw, 24px);
+    }
+
+    /* Action Pills */
+    .action-pill {
+        font-size: clamp(9px, 2.2vw, 10px);
+        padding: clamp(3px, 0.8vw, 4px) clamp(6px, 1.5vw, 8px);
+    }
+
+    /* 字体变量覆盖 */
+    :root {
+        --fs-page-title: clamp(14px, 3.5vw, 16px);
+        --fs-section-title: clamp(12px, 3vw, 13px);
+        --fs-kpi-label: clamp(13px, 3.2vw, 14px);
+        --fs-kpi-value: clamp(24px, 6vw, 28px);
+        --fs-kpi-small-value: clamp(15px, 3.8vw, 17px);
+        --fs-body: clamp(10px, 2.5vw, 11px);
+        --fs-small: clamp(9px, 2.2vw, 10px);
+        --fs-tiny: clamp(8px, 2vw, 9px);
+        --fs-badge: clamp(9px, 2.2vw, 10px);
+    }
+}
+
+/* 极小屏幕优化 (375px 及以下) */
+@media (max-width: 430px) {
+    body {
+        padding: 6px;
+    }
+
+    .header {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .small-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-grid {
+        gap: 10px;
+    }
+
+    .section-card {
+        padding: 12px;
+    }
+}
