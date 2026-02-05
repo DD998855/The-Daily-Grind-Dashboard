@@ -219,7 +219,7 @@ img, svg, canvas {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: auto auto;
-    row-gap: 24px;
+    row-gap: 16px;
     column-gap: 12px;
     flex: 1;
     overflow: hidden;
@@ -256,7 +256,7 @@ img, svg, canvas {
     gap: 12px;
     min-height: 0;
     overflow: visible;
-    margin-top: -8px;
+    margin-top: 0px;
 }
 
 /* ========== PERFORMANCE SUMMARY ========== */
@@ -274,7 +274,7 @@ img, svg, canvas {
 
 .performance-summary h2 {
     font-family: 'Krona One', sans-serif;
-    font-size: var(--fs-kpi-label);
+    font-size: var(--fs-section-title);
     color: #2d2d2d;
     margin-top: 0;
     margin-bottom: 16px;
@@ -391,9 +391,14 @@ img, svg, canvas {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
     border: 2px solid var(--accent-pink-border);
     border-radius: 14px;
-    padding: clamp(12px, 2vw, 14px) clamp(10px, 1.8vw, 12px);
+    padding: clamp(18px, 2.8vw, 22px) clamp(10px, 1.8vw, 12px);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .small-kpi-header {
@@ -1332,12 +1337,18 @@ img, svg, canvas {
     .section-card {
         width: 100%;
         max-width: 100%;
-        overflow-x: hidden;
+        overflow: visible;
         padding: clamp(12px, 3vw, 14px);
     }
 
     .section-card h2 {
         font-size: clamp(13px, 3.2vw, 14px);
+    }
+
+    /* 表格卡片必须允许内部滚动 */
+    .inventory-card,
+    .top-products-card {
+        overflow: visible;
     }
 
     /* 性能卡片布局 */
@@ -1383,61 +1394,80 @@ img, svg, canvas {
         max-width: 100%;
     }
 
-    /* 表格容器和表格真正流体布局 */
-    .table-wrapper {
+    /* 表格容器 - 横向滚动支持 */
+    .table-wrapper,
+    .products-table-wrapper {
         width: 100%;
         max-width: 100%;
         overflow-x: auto;
+        overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Products Table - 流体布局 */
+    /* Products Table - 横向滚动布局 */
     .products-table {
-        width: 100%;
-        min-width: 100%;
-        table-layout: auto;
+        display: table;
+        min-width: 600px;
+        width: max-content;
+        border-collapse: collapse;
     }
 
-    .products-table th,
-    .products-table td {
-        padding: clamp(6px, 1.5vw, 8px) clamp(6px, 1.5vw, 8px);
+    .products-table th {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 2;
+        padding: clamp(6px, 1.5vw, 8px) clamp(7px, 1.8vw, 10px);
         font-size: clamp(10px, 2.5vw, 11px);
-        word-break: break-word;
-        white-space: normal;
+        white-space: nowrap;
+    }
+
+    .products-table td {
+        padding: clamp(7px, 1.5vw, 9px) clamp(7px, 1.8vw, 10px);
+        font-size: clamp(10px, 2.5vw, 11px);
+        white-space: nowrap;
     }
 
     .products-table th.rank-col {
-        width: clamp(40px, 10vw, 50px);
+        width: 60px;
     }
 
     .section-card.top-products-card .products-table th,
     .section-card.top-products-card .products-table td {
-        padding: clamp(5px, 1.2vw, 7px) clamp(5px, 1.2vw, 7px);
+        padding: clamp(5px, 1.2vw, 7px) clamp(6px, 1.5vw, 8px);
         font-size: clamp(9px, 2.2vw, 10px);
     }
 
-    /* Inventory Table - 流体布局 */
+    /* Inventory Table - 横向滚动布局 */
     .inventory-table {
-        width: 100%;
-        min-width: 100%;
-        table-layout: auto;
+        display: table;
+        min-width: 650px;
+        width: max-content;
+        border-collapse: collapse;
     }
 
-    .inventory-table th,
-    .inventory-table td {
-        padding: clamp(6px, 1.5vw, 8px) clamp(6px, 1.5vw, 8px);
+    .inventory-table th {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 2;
+        padding: clamp(6px, 1.5vw, 8px) clamp(7px, 1.8vw, 10px);
         font-size: clamp(10px, 2.5vw, 11px);
-        word-break: break-word;
-        white-space: normal;
+        white-space: nowrap;
+    }
+
+    .inventory-table td {
+        padding: clamp(7px, 1.5vw, 9px) clamp(7px, 1.8vw, 10px);
+        font-size: clamp(10px, 2.5vw, 11px);
+        white-space: nowrap;
     }
 
     .inventory-table .status-col {
-        width: clamp(40px, 10vw, 50px);
+        width: 50px;
     }
 
     .inventory-table .stock-col {
-        width: auto;
-        min-width: 0;
+        min-width: 180px;
     }
 
     /* Stock Progress Bar 移动端适配 */
@@ -1497,5 +1527,117 @@ img, svg, canvas {
 
     .section-card {
         padding: 12px;
+    }
+}
+
+/* ============================================
+   表格横向滚动修复 - 小屏专用（最高优先级）
+   ============================================ */
+
+/* 为所有表格 wrapper 添加通用的横向滚动类 */
+.table-scroll,
+.table-wrapper,
+.products-table-wrapper {
+    width: 100%;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 小屏断点：强制表格触发横向滚动 */
+@media (max-width: 768px) {
+    /* 确保 body 和 container 不出现横向滚动 */
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw;
+    }
+
+    .container {
+        overflow-x: hidden !important;
+        max-width: 100%;
+    }
+
+    /* 卡片必须允许内部横向滚动 */
+    .section-card.inventory-card,
+    .section-card.top-products-card {
+        overflow: visible !important;
+    }
+
+    .top-products-layout {
+        overflow: visible !important;
+    }
+
+    /* 表格 wrapper 启用横向滚动 */
+    .table-scroll,
+    .table-wrapper,
+    .products-table-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+    }
+
+    /* Inventory Table 强制最小宽度触发滚动 */
+    .inventory-table {
+        min-width: 700px !important;
+        width: max-content !important;
+        border-collapse: collapse;
+        display: table !important;
+    }
+
+    /* Products Table 强制最小宽度触发滚动 */
+    .products-table {
+        min-width: 600px !important;
+        width: max-content !important;
+        border-collapse: collapse;
+        display: table !important;
+    }
+
+    /* 表头 sticky 保持在顶部（滚动时可见） */
+    .inventory-table th,
+    .products-table th {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 10;
+    }
+
+    /* 单元格内容不换行 */
+    .inventory-table th,
+    .inventory-table td,
+    .products-table th,
+    .products-table td {
+        white-space: nowrap !important;
+    }
+
+    /* Stock Progress Bar 保持固定宽度 */
+    .inventory-table .stock-col {
+        min-width: 200px !important;
+    }
+
+    .stock-progress {
+        min-width: 150px !important;
+    }
+}
+
+/* 超小屏幕（480px 以下）进一步优化 */
+@media (max-width: 480px) {
+    .inventory-table {
+        min-width: 800px !important;
+    }
+
+    .products-table {
+        min-width: 650px !important;
+    }
+
+    /* 表格内字体稍微缩小以容纳更多内容 */
+    .inventory-table th,
+    .inventory-table td,
+    .products-table th,
+    .products-table td {
+        font-size: 11px;
+        padding: 6px 8px;
     }
 }
