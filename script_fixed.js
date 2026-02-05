@@ -193,203 +193,228 @@ function renderInventoryAlerts() {
   }).join("");
 }
 
-// ========== RENDER WEEKLY REVENUE TREND (LINE CHART) ==========
+// ========== RENDER WEEKLY REVENUE TREND (Chart.js) ==========
+let revenueChartInstance = null;
+
 function renderWeeklyRevenue() {
   const canvas = document.getElementById("revenueChart");
   if (!canvas) return;
 
+  // Destroy previous chart instance
+  if (revenueChartInstance) {
+    revenueChartInstance.destroy();
+    revenueChartInstance = null;
+  }
+
   const ctx = canvas.getContext("2d");
-  const dpr = window.devicePixelRatio || 1;
-
-  // Reset any previous scaling to avoid accumulating scale
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
-  ctx.scale(dpr, dpr);
-
-  const width = rect.width;
-  const height = rect.height;
-  const padding = { top: 20, right: 20, bottom: 45, left: 65 };
-  const chartWidth = width - padding.left - padding.right;
-  const chartHeight = height - padding.top - padding.bottom;
-
   const days = WEEKLY_DATA.map(d => d.day.substring(0, 3));
   const revenues = WEEKLY_DATA.map(d => d.revenue);
-  const fullDays = WEEKLY_DATA.map(d => d.day);
+  const expenses = WEEKLY_DATA.map(d => d.expenses);
+  const profits = WEEKLY_DATA.map(d => d.profit);
 
-  const maxRevenue = Math.max(...revenues);
-  const minRevenue = Math.min(...revenues);
-  const revenueRange = maxRevenue - minRevenue || 1;
-
-  const getX = (index) => padding.left + (index / (days.length - 1)) * chartWidth;
-  const getY = (value) =>
-    padding.top + chartHeight - ((value - minRevenue + revenueRange * 0.1) / (revenueRange * 1.2)) * chartHeight;
-
-  ctx.clearRect(0, 0, width, height);
-
-  // gridlines
-  ctx.strokeStyle = "rgba(0, 0, 0, 0.05)";
-  ctx.lineWidth = 1;
-  for (let i = 0; i <= 5; i++) {
-    const y = padding.top + (chartHeight / 5) * i;
-    ctx.beginPath();
-    ctx.moveTo(padding.left, y);
-    ctx.lineTo(padding.left + chartWidth, y);
-    ctx.stroke();
-  }
-
+  // Get theme color for Revenue
   const styles = getComputedStyle(document.documentElement);
   const accentColor = styles.getPropertyValue("--accent-color").trim();
-  const accentFill = styles.getPropertyValue("--accent-fill").trim();
 
-  // area fill
-  ctx.fillStyle = accentFill;
-  ctx.beginPath();
-  ctx.moveTo(getX(0), padding.top + chartHeight);
-  revenues.forEach((revenue, i) => ctx.lineTo(getX(i), getY(revenue)));
-  ctx.lineTo(getX(revenues.length - 1), padding.top + chartHeight);
-  ctx.closePath();
-  ctx.fill();
+  // Color configuration: Revenue=Pink, Expenses=Purple, Profit=Yellow
+  const revenueColor = accentColor; // Pink theme color
+  const expensesColor = "rgba(156, 39, 176, 0.9)"; // Purple
+  const profitColor = "#f6c343"; // Yellow
 
-  // line
-  ctx.globalAlpha = 0.85;
-  ctx.strokeStyle = accentColor;
-  ctx.lineWidth = 2.5;
-  ctx.lineJoin = "round";
-  ctx.lineCap = "round";
-  ctx.beginPath();
-  revenues.forEach((revenue, i) => {
-    if (i === 0) ctx.moveTo(getX(i), getY(revenue));
-    else ctx.lineTo(getX(i), getY(revenue));
-  });
-  ctx.stroke();
-  ctx.globalAlpha = 1;
-
-  // points
-  revenues.forEach((revenue, i) => {
-    const x = getX(i);
-    const y = getY(revenue);
-
-    ctx.fillStyle = "#fff";
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = accentColor;
-    ctx.beginPath();
-    ctx.arc(x, y, 3, 0, Math.PI * 2);
-    ctx.fill();
-  });
-
-  // x labels
-  ctx.fillStyle = "#666";
-  ctx.font = "11px Inter, sans-serif";
-  ctx.textAlign = "center";
-  days.forEach((day, i) => ctx.fillText(day, getX(i), padding.top + chartHeight + 20));
-
-  // y labels
-  ctx.textAlign = "right";
-  for (let i = 0; i <= 5; i++) {
-    const value = minRevenue + (revenueRange / 5) * (5 - i);
-    const y = padding.top + (chartHeight / 5) * i;
-    ctx.fillText("$" + (value / 1000).toFixed(1) + "k", padding.left - 10, y + 4);
-  }
-
-  // ========== TOOLTIP ==========
-  const revenueCard = canvas.closest(".revenue-card") || canvas.parentElement;
-  revenueCard.style.position = "relative";
-
-  let tooltip = document.getElementById("chart-tooltip");
-  if (!tooltip) {
-    tooltip = document.createElement("div");
-    tooltip.id = "chart-tooltip";
-    tooltip.className = "chart-tooltip";
-    revenueCard.appendChild(tooltip);
-  }
-
-  function getNearestPoint(mouseX, mouseY) {
-    let minDist = Infinity;
-    let nearestIndex = -1;
-
-    revenues.forEach((revenue, i) => {
-      const px = getX(i);
-      const py = getY(revenue);
-      const dist = Math.hypot(mouseX - px, mouseY - py);
-      if (dist < minDist && dist < 40) {
-        minDist = dist;
-        nearestIndex = i;
+  revenueChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [
+        {
+          label: 'Revenue',
+          data: revenues,
+          borderColor: revenueColor,
+          backgroundColor: accentColor.replace('1)', '0.15)'),
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: revenueColor,
+          pointBorderWidth: 2,
+          fill: true,
+          tension: 0.3
+        },
+        {
+          label: 'Expenses',
+          data: expenses,
+          borderColor: expensesColor,
+          backgroundColor: 'rgba(156, 39, 176, 0.1)',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: expensesColor,
+          pointBorderWidth: 2,
+          fill: true,
+          tension: 0.3
+        },
+        {
+          label: 'Profit',
+          data: profits,
+          borderColor: profitColor,
+          backgroundColor: 'rgba(246, 195, 67, 0.1)',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#fff',
+          pointBorderColor: profitColor,
+          pointBorderWidth: 2,
+          fill: true,
+          tension: 0.3
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 10,
+          right: 10,
+          bottom: 5,
+          left: 5
+        }
+      },
+      interaction: {
+        mode: 'point', // Only show tooltip for exact point
+        intersect: true // Must be over the point
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          align: 'end', // Right side
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            font: {
+              size: 11,
+              weight: '600',
+              family: 'Inter, sans-serif'
+            },
+            color: '#333',
+            padding: 10,
+            boxWidth: 10,
+            boxHeight: 10
+          }
+        },
+        tooltip: {
+          enabled: false, // Disable default tooltip
+          external: externalTooltipHandler // Use custom HTML tooltip
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            font: {
+              size: 11,
+              family: 'Inter, sans-serif'
+            },
+            color: '#666'
+          }
+        },
+        y: {
+          beginAtZero: false,
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)',
+            lineWidth: 1
+          },
+          ticks: {
+            font: {
+              size: 11,
+              family: 'Inter, sans-serif'
+            },
+            color: '#666',
+            callback: function(value) {
+              return '$' + (value / 1000).toFixed(2) + 'k';
+            }
+          }
+        }
       }
-    });
-    return nearestIndex;
-  }
-
-  function handleMouseMove(e) {
-    const cRect = canvas.getBoundingClientRect();
-    const mouseX = e.clientX - cRect.left;
-    const mouseY = e.clientY - cRect.top;
-
-    const nearestIndex = getNearestPoint(mouseX, mouseY);
-    if (nearestIndex < 0) {
-      tooltip.classList.remove("is-visible");
-      return;
     }
-
-    const dayName = fullDays[nearestIndex];
-    const revenueValue = revenues[nearestIndex];
-
-    tooltip.innerHTML = `
-      <div class="chart-tooltip-day">${dayName}</div>
-      <div class="chart-tooltip-value">${formatCurrency(revenueValue)}</div>
-    `;
-
-    // 先显示一下拿尺寸
-    tooltip.classList.add("is-visible");
-
-    const pointX = getX(nearestIndex);
-    const pointY = getY(revenueValue);
-
-    // 把 tooltip 定位到 revenueCard 内（不会被 chart-container 裁切）
-    // 关键修复：计算时必须考虑滚动偏移量（scrollLeft/scrollTop）
-    const cardRect = revenueCard.getBoundingClientRect();
-    const scrollLeft = revenueCard.scrollLeft || 0;
-    const scrollTop = revenueCard.scrollTop || 0;
-    
-    const pointAbsX = cRect.left + pointX - cardRect.left + scrollLeft;
-    const pointAbsY = cRect.top + pointY - cardRect.top + scrollTop;
-
-    const tRect = tooltip.getBoundingClientRect();
-    const tW = tRect.width;
-    const tH = tRect.height;
-
-    // 默认：在点的上方
-    let left = pointAbsX - tW / 2;
-    let top = pointAbsY - tH - 12;
-
-    // 贴边：不让它超出卡片左右（考虑滚动区域的实际宽度）
-    const scrollableWidth = revenueCard.scrollWidth;
-    left = Math.max(scrollLeft + 8, Math.min(left, scrollLeft + cardRect.width - tW - 8));
-
-    // 如果上方放不下，就放下方
-    if (top < scrollTop + 8) top = pointAbsY + 12;
-
-    tooltip.style.left = `${left}px`;
-    tooltip.style.top = `${top}px`;
-    tooltip.style.transform = "none";
-  }
-
-  function handleMouseLeave() {
-    tooltip.classList.remove("is-visible");
-  }
-
-  canvas.onmousemove = handleMouseMove;
-  canvas.onmouseleave = handleMouseLeave;
-  
-  // 监听滚动容器的滚动事件：滚动时隐藏 tooltip，避免错位显示
-  revenueCard.addEventListener("scroll", () => {
-    tooltip.classList.remove("is-visible");
   });
+}
+
+// Custom external tooltip handler for single-value display + accurate positioning
+function externalTooltipHandler(context) {
+  const { chart, tooltip } = context;
+  const revenueCard = chart.canvas.closest('.revenue-card');
+  
+  // Get or create tooltip element
+  let tooltipEl = document.getElementById('chartjs-tooltip');
+  if (!tooltipEl) {
+    tooltipEl = document.createElement('div');
+    tooltipEl.id = 'chartjs-tooltip';
+    tooltipEl.className = 'chart-tooltip';
+    revenueCard.appendChild(tooltipEl);
+  }
+
+  // Hide if no tooltip
+  if (tooltip.opacity === 0) {
+    tooltipEl.classList.remove('is-visible');
+    return;
+  }
+
+  // Get the single datapoint (mode: 'point', intersect: true)
+  if (tooltip.dataPoints && tooltip.dataPoints.length > 0) {
+    const dataPoint = tooltip.dataPoints[0];
+    const datasetLabel = dataPoint.dataset.label;
+    const value = dataPoint.parsed.y;
+    const dayLabel = WEEKLY_DATA[dataPoint.dataIndex].day;
+
+    // Get dataset color
+    const datasetColor = dataPoint.dataset.borderColor;
+
+    // Build tooltip HTML - single value only
+    tooltipEl.innerHTML = `
+      <div class="chart-tooltip-day">${dayLabel}</div>
+      <div style="font-size: 12px; font-weight: 700; color: ${datasetColor}; margin-top: 4px;">
+        ${datasetLabel}: ${formatCurrency(value)}
+      </div>
+    `;
+  }
+
+  tooltipEl.classList.add('is-visible');
+
+  // Position tooltip - accounting for scroll offset
+  const canvasRect = chart.canvas.getBoundingClientRect();
+  const cardRect = revenueCard.getBoundingClientRect();
+  const scrollLeft = revenueCard.scrollLeft || 0;
+  const scrollTop = revenueCard.scrollTop || 0;
+
+  // Calculate absolute position relative to card
+  const tooltipX = canvasRect.left - cardRect.left + tooltip.caretX + scrollLeft;
+  const tooltipY = canvasRect.top - cardRect.top + tooltip.caretY + scrollTop;
+
+  // Get tooltip dimensions
+  const tooltipRect = tooltipEl.getBoundingClientRect();
+  const tooltipWidth = tooltipRect.width;
+  const tooltipHeight = tooltipRect.height;
+
+  // Position: centered horizontally above the point
+  let left = tooltipX - tooltipWidth / 2;
+  let top = tooltipY - tooltipHeight - 10; // 10px above point
+
+  // Keep within horizontal bounds
+  left = Math.max(scrollLeft + 8, Math.min(left, scrollLeft + cardRect.width - tooltipWidth - 8));
+
+  // If no room above, place below
+  if (top < scrollTop + 8) {
+    top = tooltipY + 10;
+  }
+
+  tooltipEl.style.left = left + 'px';
+  tooltipEl.style.top = top + 'px';
+  tooltipEl.style.transform = 'none';
 }
 
 // ========== SEARCH FUNCTIONALITY ==========
