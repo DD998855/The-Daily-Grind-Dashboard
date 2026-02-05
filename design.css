@@ -1641,3 +1641,125 @@ img, svg, canvas {
         padding: 6px 8px;
     }
 }
+
+/* ========== 移动端横向滚动适配 ========== */
+/* 全局禁止页面横向滚动 */
+html {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* 移动端（<=768px）：白色卡片内部横向滚动 */
+@media (max-width: 768px) {
+    /* 1. Performance Summary 白色卡片可横向滚动 */
+    .performance-summary {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .performance-layout {
+        width: max-content;
+        min-width: 600px;
+    }
+    
+    /* 2. Inventory Alerts 白色卡片可横向滚动 */
+    .inventory-card {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table-wrapper {
+        width: max-content;
+        min-width: 100%;
+    }
+    
+    .inventory-table {
+        width: max-content;
+        min-width: 680px;
+    }
+    
+    /* 3. Top Products 白色卡片可横向滚动 */
+    .top-products-card {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .products-table-wrapper {
+        width: max-content;
+        min-width: 100%;
+    }
+    
+    .products-table {
+        width: max-content;
+        min-width: 620px;
+    }
+    
+    /* 4. Weekly Revenue Trend 白色卡片可横向滚动 */
+    .revenue-card {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .chart-container {
+        width: max-content;
+        min-width: 100%;
+    }
+    
+    .chart-container canvas {
+        min-width: 480px !important;
+        max-width: none !important;
+    }
+    
+    /* WebKit 浏览器灰色滚动条样式 */
+    .performance-summary::-webkit-scrollbar,
+    .inventory-card::-webkit-scrollbar,
+    .top-products-card::-webkit-scrollbar,
+    .revenue-card::-webkit-scrollbar {
+        height: 10px;
+    }
+    
+    .performance-summary::-webkit-scrollbar-thumb,
+    .inventory-card::-webkit-scrollbar-thumb,
+    .top-products-card::-webkit-scrollbar-thumb,
+    .revenue-card::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.18);
+        border-radius: 999px;
+    }
+    
+    .performance-summary::-webkit-scrollbar-track,
+    .inventory-card::-webkit-scrollbar-track,
+    .top-products-card::-webkit-scrollbar-track,
+    .revenue-card::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 999px;
+        margin: 0 8px;
+    }
+}
+
+/* 小屏幕（<=480px）进一步调整最小宽度 */
+@media (max-width: 480px) {
+    .performance-layout {
+        min-width: 650px;
+    }
+    
+    .inventory-table {
+        min-width: 720px;
+    }
+    
+    .products-table {
+        min-width: 650px;
+    }
+    
+    .chart-container canvas {
+        min-width: 520px !important;
+    }
+}
