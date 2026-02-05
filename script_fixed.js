@@ -351,9 +351,13 @@ function renderWeeklyRevenue() {
     const pointY = getY(revenueValue);
 
     // 把 tooltip 定位到 revenueCard 内（不会被 chart-container 裁切）
+    // 关键修复：计算时必须考虑滚动偏移量（scrollLeft/scrollTop）
     const cardRect = revenueCard.getBoundingClientRect();
-    const pointAbsX = cRect.left + pointX - cardRect.left;
-    const pointAbsY = cRect.top + pointY - cardRect.top;
+    const scrollLeft = revenueCard.scrollLeft || 0;
+    const scrollTop = revenueCard.scrollTop || 0;
+    
+    const pointAbsX = cRect.left + pointX - cardRect.left + scrollLeft;
+    const pointAbsY = cRect.top + pointY - cardRect.top + scrollTop;
 
     const tRect = tooltip.getBoundingClientRect();
     const tW = tRect.width;
@@ -363,11 +367,12 @@ function renderWeeklyRevenue() {
     let left = pointAbsX - tW / 2;
     let top = pointAbsY - tH - 12;
 
-    // 贴边：不让它超出卡片左右
-    left = Math.max(8, Math.min(left, cardRect.width - tW - 8));
+    // 贴边：不让它超出卡片左右（考虑滚动区域的实际宽度）
+    const scrollableWidth = revenueCard.scrollWidth;
+    left = Math.max(scrollLeft + 8, Math.min(left, scrollLeft + cardRect.width - tW - 8));
 
     // 如果上方放不下，就放下方
-    if (top < 8) top = pointAbsY + 12;
+    if (top < scrollTop + 8) top = pointAbsY + 12;
 
     tooltip.style.left = `${left}px`;
     tooltip.style.top = `${top}px`;
@@ -380,6 +385,11 @@ function renderWeeklyRevenue() {
 
   canvas.onmousemove = handleMouseMove;
   canvas.onmouseleave = handleMouseLeave;
+  
+  // 监听滚动容器的滚动事件：滚动时隐藏 tooltip，避免错位显示
+  revenueCard.addEventListener("scroll", () => {
+    tooltip.classList.remove("is-visible");
+  });
 }
 
 // ========== SEARCH FUNCTIONALITY ==========
