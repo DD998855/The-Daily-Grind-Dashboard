@@ -1186,25 +1186,19 @@ img, svg, canvas {
     .action-pill {
         font-size: var(--fs-badge);
         padding: clamp(4px, 1vw, 5px) clamp(8px, 1.5vw, 10px);
+    }
+}
 
 /* =========================
-   TOOLTIP 修复：不再被裁切
+   TOOLTIP 修复：确保tooltip显示
    ========================= */
-
-.section-card.revenue-card {
-  overflow: visible !important;
-}
-
-.revenue-card .chart-container {
-  overflow: visible !important;
-}
 
 .chart-tooltip {
   z-index: 99999;
 }
 
 /* =========================
-   响应式适配 - 平板和小屏
+   响应式适配 - 平板
    ========================= */
 
 @media (max-width: 1024px) {
@@ -1226,30 +1220,47 @@ img, svg, canvas {
 }
 
 /* =========================
-   移动端响应式适配
-   适配 375px - 768px 手机宽度
+   移动端横向滚动适配 - 核心修复
+   全局禁止页面横向滚动，但每个卡片内部可以横向滚动
    ========================= */
 
+/* 全局禁止页面横向滚动 */
+html {
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+.container {
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+/* 移动端（<=768px）：每个白色卡片内部可横向滚动 */
 @media (max-width: 768px) {
     /* 全局防溢出 */
     html {
         width: 100%;
-        max-width: 100%;
-        overflow-x: hidden;
+        max-width: 100vw;
+        overflow-x: hidden !important;
     }
 
     body {
         width: 100%;
         max-width: 100%;
         padding: clamp(6px, 2vw, 8px);
-        overflow-x: hidden;
+        overflow-x: hidden !important;
     }
 
     .container {
         width: 100%;
         max-width: 100%;
         min-height: auto;
-        overflow-x: hidden;
+        overflow-x: hidden !important;
     }
 
     /* Header 移动端布局 */
@@ -1333,11 +1344,10 @@ img, svg, canvas {
         gap: clamp(10px, 2.5vw, 12px);
     }
 
-    /* 所有卡片防溢出 */
+    /* 所有卡片基础样式 */
     .section-card {
         width: 100%;
         max-width: 100%;
-        overflow: visible;
         padding: clamp(12px, 3vw, 14px);
     }
 
@@ -1345,25 +1355,24 @@ img, svg, canvas {
         font-size: clamp(13px, 3.2vw, 14px);
     }
 
-    /* 表格卡片必须允许内部滚动 */
-    .inventory-card,
-    .top-products-card {
-        overflow: visible;
-    }
-
-    /* 性能卡片布局 */
+    /* 1. Performance Summary - 白色卡片可横向滚动 */
     .performance-summary {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
         padding: clamp(12px, 3vw, 14px);
     }
-
+    
     .performance-layout {
-        display: flex;
-        flex-direction: column;
-        gap: clamp(10px, 2.5vw, 12px);
+        width: max-content;
+        min-width: 700px;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: clamp(10px, 2.5vw, 16px);
     }
 
     .big-kpi-card {
-        width: 100%;
         padding: clamp(14px, 3.5vw, 16px);
     }
 
@@ -1377,39 +1386,95 @@ img, svg, canvas {
         padding: clamp(10px, 2.5vw, 12px) clamp(8px, 2vw, 10px);
     }
 
-    /* Revenue 图表容器 */
-    .revenue-card {
-        overflow-x: hidden;
-    }
-
-    .revenue-card .chart-container {
-        width: 100%;
-        height: clamp(200px, 50vw, 250px);
-        position: relative;
-    }
-
-    .revenue-card canvas {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 100%;
-    }
-
-    /* 表格容器 - 横向滚动支持 */
-    .table-wrapper,
-    .products-table-wrapper {
-        width: 100%;
-        max-width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
+    /* 2. Inventory Alerts - 白色卡片可横向滚动 */
+    .inventory-card {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
         -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+    }
+    
+    .table-wrapper {
+        overflow: visible;
+        min-width: 100%;
+    }
+    
+    .inventory-table {
+        width: max-content;
+        min-width: 750px;
+        border-collapse: collapse;
+        display: table;
     }
 
-    /* Products Table - 横向滚动布局 */
+    .inventory-table th {
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 2;
+        padding: clamp(6px, 1.5vw, 8px) clamp(7px, 1.8vw, 10px);
+        font-size: clamp(10px, 2.5vw, 11px);
+        white-space: nowrap;
+    }
+
+    .inventory-table td {
+        padding: clamp(7px, 1.5vw, 9px) clamp(7px, 1.8vw, 10px);
+        font-size: clamp(10px, 2.5vw, 11px);
+        white-space: nowrap;
+    }
+
+    .inventory-table .status-col {
+        width: 50px;
+    }
+
+    .inventory-table .stock-col {
+        min-width: 200px;
+    }
+
+    /* Stock Progress Bar 移动端适配 */
+    .stock-progress {
+        height: clamp(22px, 5.5vw, 26px);
+        min-width: 150px;
+    }
+
+    .stock-progress-label {
+        font-size: clamp(9px, 2.2vw, 10px);
+    }
+
+    /* Status Ring 缩小 */
+    .status-ring {
+        width: clamp(20px, 5vw, 24px);
+        height: clamp(20px, 5vw, 24px);
+    }
+
+    /* Action Pills */
+    .action-pill {
+        font-size: clamp(9px, 2.2vw, 10px);
+        padding: clamp(3px, 0.8vw, 4px) clamp(6px, 1.5vw, 8px);
+    }
+    
+    /* 3. Top Products - 白色卡片可横向滚动 */
+    .top-products-card {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+    }
+    
+    .top-products-layout {
+        overflow: visible;
+        min-width: 100%;
+    }
+    
+    .products-table-wrapper {
+        overflow: visible;
+        min-width: 100%;
+    }
+    
     .products-table {
-        display: table;
-        min-width: 600px;
         width: max-content;
+        min-width: 700px;
         border-collapse: collapse;
+        display: table;
     }
 
     .products-table th {
@@ -1437,59 +1502,56 @@ img, svg, canvas {
         padding: clamp(5px, 1.2vw, 7px) clamp(6px, 1.5vw, 8px);
         font-size: clamp(9px, 2.2vw, 10px);
     }
-
-    /* Inventory Table - 横向滚动布局 */
-    .inventory-table {
-        display: table;
+    
+    /* 4. Weekly Revenue Trend - 白色卡片可横向滚动 */
+    .revenue-card {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        padding: clamp(12px, 3vw, 14px) !important;
+    }
+    
+    .revenue-card h2 {
+        margin-bottom: 10px;
+    }
+    
+    .chart-container {
+        width: 650px;
         min-width: 650px;
-        width: max-content;
-        border-collapse: collapse;
+        height: 280px;
+        position: relative;
+        overflow: visible;
     }
-
-    .inventory-table th {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 2;
-        padding: clamp(6px, 1.5vw, 8px) clamp(7px, 1.8vw, 10px);
-        font-size: clamp(10px, 2.5vw, 11px);
-        white-space: nowrap;
+    
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
     }
-
-    .inventory-table td {
-        padding: clamp(7px, 1.5vw, 9px) clamp(7px, 1.8vw, 10px);
-        font-size: clamp(10px, 2.5vw, 11px);
-        white-space: nowrap;
+    
+    /* 美化横向滚动条样式 */
+    .performance-summary::-webkit-scrollbar,
+    .inventory-card::-webkit-scrollbar,
+    .top-products-card::-webkit-scrollbar,
+    .revenue-card::-webkit-scrollbar {
+        height: 8px;
     }
-
-    .inventory-table .status-col {
-        width: 50px;
+    
+    .performance-summary::-webkit-scrollbar-thumb,
+    .inventory-card::-webkit-scrollbar-thumb,
+    .top-products-card::-webkit-scrollbar-thumb,
+    .revenue-card::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
     }
-
-    .inventory-table .stock-col {
-        min-width: 180px;
-    }
-
-    /* Stock Progress Bar 移动端适配 */
-    .stock-progress {
-        height: clamp(22px, 5.5vw, 26px);
-        min-width: 100px;
-    }
-
-    .stock-progress-label {
-        font-size: clamp(9px, 2.2vw, 10px);
-    }
-
-    /* Status Ring 缩小 */
-    .status-ring {
-        width: clamp(20px, 5vw, 24px);
-        height: clamp(20px, 5vw, 24px);
-    }
-
-    /* Action Pills */
-    .action-pill {
-        font-size: clamp(9px, 2.2vw, 10px);
-        padding: clamp(3px, 0.8vw, 4px) clamp(6px, 1.5vw, 8px);
+    
+    .performance-summary::-webkit-scrollbar-track,
+    .inventory-card::-webkit-scrollbar-track,
+    .top-products-card::-webkit-scrollbar-track,
+    .revenue-card::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+        margin: 0 8px;
     }
 
     /* 字体变量覆盖 */
@@ -1506,8 +1568,8 @@ img, svg, canvas {
     }
 }
 
-/* 极小屏幕优化 (375px 及以下) */
-@media (max-width: 430px) {
+/* 小屏幕（<=480px）进一步调整最小宽度 */
+@media (max-width: 480px) {
     body {
         padding: 6px;
     }
@@ -1528,238 +1590,22 @@ img, svg, canvas {
     .section-card {
         padding: 12px;
     }
-}
-
-/* ============================================
-   表格横向滚动修复 - 小屏专用（最高优先级）
-   ============================================ */
-
-/* 为所有表格 wrapper 添加通用的横向滚动类 */
-.table-scroll,
-.table-wrapper,
-.products-table-wrapper {
-    width: 100%;
-    overflow-x: auto !important;
-    overflow-y: visible !important;
-    -webkit-overflow-scrolling: touch;
-}
-
-/* 小屏断点：强制表格触发横向滚动 */
-@media (max-width: 768px) {
-    /* 确保 body 和 container 不出现横向滚动 */
-    html, body {
-        overflow-x: hidden !important;
-        max-width: 100vw;
-    }
-
-    .container {
-        overflow-x: hidden !important;
-        max-width: 100%;
-    }
-
-    /* 卡片必须允许内部横向滚动 */
-    .section-card.inventory-card,
-    .section-card.top-products-card {
-        overflow: visible !important;
-    }
-
-    .top-products-layout {
-        overflow: visible !important;
-    }
-
-    /* 表格 wrapper 启用横向滚动 */
-    .table-scroll,
-    .table-wrapper,
-    .products-table-wrapper {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow-x: auto !important;
-        overflow-y: visible !important;
-        -webkit-overflow-scrolling: touch;
-        position: relative;
-    }
-
-    /* Inventory Table 强制最小宽度触发滚动 */
-    .inventory-table {
-        min-width: 700px !important;
-        width: max-content !important;
-        border-collapse: collapse;
-        display: table !important;
-    }
-
-    /* Products Table 强制最小宽度触发滚动 */
-    .products-table {
-        min-width: 600px !important;
-        width: max-content !important;
-        border-collapse: collapse;
-        display: table !important;
-    }
-
-    /* 表头 sticky 保持在顶部（滚动时可见） */
-    .inventory-table th,
-    .products-table th {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 10;
-    }
-
-    /* 单元格内容不换行 */
-    .inventory-table th,
-    .inventory-table td,
-    .products-table th,
-    .products-table td {
-        white-space: nowrap !important;
-    }
-
-    /* Stock Progress Bar 保持固定宽度 */
-    .inventory-table .stock-col {
-        min-width: 200px !important;
-    }
-
-    .stock-progress {
-        min-width: 150px !important;
-    }
-}
-
-/* 超小屏幕（480px 以下）进一步优化 */
-@media (max-width: 480px) {
-    .inventory-table {
-        min-width: 800px !important;
-    }
-
-    .products-table {
-        min-width: 650px !important;
-    }
-
-    /* 表格内字体稍微缩小以容纳更多内容 */
-    .inventory-table th,
-    .inventory-table td,
-    .products-table th,
-    .products-table td {
-        font-size: 11px;
-        padding: 6px 8px;
-    }
-}
-
-/* ========== 移动端横向滚动适配 ========== */
-/* 全局禁止页面横向滚动 */
-html {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
-body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
-/* 移动端（<=768px）：白色卡片内部横向滚动 */
-@media (max-width: 768px) {
-    /* 1. Performance Summary 白色卡片可横向滚动 */
-    .performance-summary {
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-    }
     
+    /* 进一步增大最小宽度以确保内容完整显示 */
     .performance-layout {
-        width: max-content;
-        min-width: 600px;
-    }
-    
-    /* 2. Inventory Alerts 白色卡片可横向滚动 */
-    .inventory-card {
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .table-wrapper {
-        width: max-content;
-        min-width: 100%;
+        min-width: 750px;
     }
     
     .inventory-table {
-        width: max-content;
-        min-width: 680px;
-    }
-    
-    /* 3. Top Products 白色卡片可横向滚动 */
-    .top-products-card {
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .products-table-wrapper {
-        width: max-content;
-        min-width: 100%;
+        min-width: 800px;
     }
     
     .products-table {
-        width: max-content;
-        min-width: 620px;
-    }
-    
-    /* 4. Weekly Revenue Trend 白色卡片可横向滚动 */
-    .revenue-card {
-        overflow-x: auto;
-        overflow-y: hidden;
-        -webkit-overflow-scrolling: touch;
+        min-width: 750px;
     }
     
     .chart-container {
-        width: max-content;
-        min-width: 100%;
-    }
-    
-    .chart-container canvas {
-        min-width: 480px !important;
-        max-width: none !important;
-    }
-    
-    /* WebKit 浏览器灰色滚动条样式 */
-    .performance-summary::-webkit-scrollbar,
-    .inventory-card::-webkit-scrollbar,
-    .top-products-card::-webkit-scrollbar,
-    .revenue-card::-webkit-scrollbar {
-        height: 10px;
-    }
-    
-    .performance-summary::-webkit-scrollbar-thumb,
-    .inventory-card::-webkit-scrollbar-thumb,
-    .top-products-card::-webkit-scrollbar-thumb,
-    .revenue-card::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.18);
-        border-radius: 999px;
-    }
-    
-    .performance-summary::-webkit-scrollbar-track,
-    .inventory-card::-webkit-scrollbar-track,
-    .top-products-card::-webkit-scrollbar-track,
-    .revenue-card::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.06);
-        border-radius: 999px;
-        margin: 0 8px;
-    }
-}
-
-/* 小屏幕（<=480px）进一步调整最小宽度 */
-@media (max-width: 480px) {
-    .performance-layout {
-        min-width: 650px;
-    }
-    
-    .inventory-table {
-        min-width: 720px;
-    }
-    
-    .products-table {
-        min-width: 650px;
-    }
-    
-    .chart-container canvas {
-        min-width: 520px !important;
+        width: 700px !important;
+        min-width: 700px !important;
     }
 }
