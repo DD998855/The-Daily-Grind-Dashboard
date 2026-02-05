@@ -452,7 +452,7 @@ img, svg, canvas {
 
 /* ========== SECTION CARDS ========== */
 .section-card {
-    background: linear-gradient(135deg, #ffffff 0%, #fffbfd 100%);
+    background: #ffffff;
     border-radius: 16px;
     padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 20px) clamp(18px, 3vw, 22px) clamp(16px, 3vw, 20px);
     box-shadow: var(--shadow-card);
